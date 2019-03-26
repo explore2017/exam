@@ -56,7 +56,7 @@ class QSingle extends React.Component {
           subjectId:values.subject,
           keyPoint:values.knowledgePoint,
           defaultScore:values.defaultScore,
-          title:'选择题',
+          title:'单选题',
         }); 
       
 

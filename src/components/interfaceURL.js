@@ -109,6 +109,8 @@ export const change_paper = "paper";
 
 export const get_paper_question="paper/details"
 
+export const change_paper_question="paper/details"
+
 //成绩查询
 export const search_score = "data/search_score.json";
 

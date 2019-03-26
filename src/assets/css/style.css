@@ -236,3 +236,11 @@
 .demo-loadmore-list {
   min-height: 350px;
 }
+
+.selects{
+  margin-top:10px;
+  margin-left:50px;
+}
+.content{
+  margin-top:10px;
+}
