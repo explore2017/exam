@@ -120,8 +120,8 @@ class AddTeacher extends React.Component {
               label="科目"
             >          
               {getFieldDecorator('subject', {
-              rules: [{ required: true, message: '科目不能为空！'}],
-            })(
+              rules: [{ required: true, message: '科目不能为空！'}]}
+            )(
                 <Select size='default' style={{ width: 300 }}>               
                    {subject}
                 </Select>

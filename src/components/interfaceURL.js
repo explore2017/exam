@@ -100,8 +100,13 @@ export const get_class_info = "/class/allclass";
 export const knowledge_point = "data/knowledgePoint.json";
 //提交题目信息（试题录入）
 export const add_question = "/question";
+
+export const get_question_condition = "/question/condition";
+
 //出卷
 export const add_paper = "paper";
+
+export const get_paper_score = "paper/details/score";
 
 export const delete_paper = "paper/";
 
@@ -110,6 +115,14 @@ export const change_paper = "paper";
 export const get_paper_question="paper/details"
 
 export const change_paper_question="paper/details"
+
+export const delete_paper_question = "paper/details/";
+
+export const add_paper_question="paper/details"
+
+export const change_paper_sequence="paper/change_sequence"
+
+
 
 //成绩查询
 export const search_score = "data/search_score.json";

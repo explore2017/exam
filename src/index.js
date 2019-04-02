@@ -6,6 +6,7 @@ import 'antd/dist/antd.css'
 import './assets/css/style.css'
 import login from './containers/login/index.js'
 import main from './containers/main/index.js'
+import ShowPaper from './containers/main/paper_manage/show_paper'
 import { HashRouter,BrowserRouter,Route,Link,Switch  } from 'react-router-dom'
 
 const store = configureStore()
@@ -17,6 +18,7 @@ ReactDOM.render((
 				<Switch>
 					<Route path="/login" component={login}/>
 					<Route path="/main" component={main}/>
+					<Route path="/paper/:paperId" component={ShowPaper}/>
 				</Switch>
 			</div>
 		</HashRouter>

@@ -48,6 +48,7 @@ import CreateExam from './paper_manage/create_exam.js';
 import ScoringPaper from './paper_manage/scoring_paper.js';
 import AllPapers from './paper_manage/all_papers.js';
 import ReadingPaper from './paper_manage/reading_paper.js';
+import ShowPaper from './paper_manage/show_paper.js';
 
 //个人中心
 import ChangePassword from './personal_center/change_password';
@@ -240,7 +241,7 @@ class Main extends React.Component {
 
 							{/* 试题录入 */}
 							<Route path="/main/q_checkin" component={QCheckin}/>
-							<Route path="/main/add_paper/choose_question/:paperId" component={ChooseQuestions}/>
+							<Route path="/main/add_paper/choose_question/:paperId/:subjectId/:totalScore" component={ChooseQuestions}/>
 							<Route path="/main/add_paper" component={Paper}/>
 							<Route path="/main/score_search" component={ScoreSearch}/>
 
@@ -262,6 +263,8 @@ class Main extends React.Component {
 							<Route path="/main/paper_manage/scoring/all_papers/reading_paper/:paperId/:classId/:instId" component={ReadingPaper}/>
 							<Route path="/main/paper_manage/scoring/all_papers/:paperId/:classId/:managerId" component={AllPapers}/>
 							<Route path="/main/paper_manage/scoring" component={ScoringPaper}/>
+						
+
 
 							{/* 个人中心 */}
 							<Route path="/main/personal_center/change_password" component={ChangePassword}/>

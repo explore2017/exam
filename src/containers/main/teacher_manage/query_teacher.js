@@ -195,7 +195,6 @@ addSubject(){
          name:values.name,        
          subjectId:subjectId,   
         }).then((res)=>{
-          console.log(res.status);
           if(res.status==0){
             this.getPageDate();
           }

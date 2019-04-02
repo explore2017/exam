@@ -80,8 +80,10 @@ class Paper extends React.Component {
 
    //确认修改
    changeOk(){
+
     this.props.form.validateFieldsAndScroll(['Nname', 'Ntotal_score','Nneed_time','Ndescribe','Nusufruct','Npass_score','Ndifficulty'],(err, values) => {
       if (!err) {
+        this.setState({visibleChangeModal:false})
         put(URL.change_paper,{
           id:this.state.curSelectPaper.id,
           name:values.Nname,
@@ -98,7 +100,7 @@ class Paper extends React.Component {
         })
       }
     });
-    this.setState({visibleChangeModal:false})
+
   }
 
 
@@ -127,7 +129,13 @@ class Paper extends React.Component {
   }
 
   changePaper(item){
-    this.setState({curSelectPaper:item,visibleChangeModal:true})
+    this.setState({curSelectPaper:item},()=>{
+      this.setState({visibleChangeModal:true},()=>{
+        console.log(this.state.curSelectPaper);
+      })
+    })
+ 
+   
   }
 
  
@@ -221,9 +229,9 @@ class Paper extends React.Component {
                 >
                   {getFieldDecorator('difficulty',{initialValue:0})(
                     <Select style={{ width: 120 }} >
-                      <Option value={0}>初级</Option>
-                      <Option value={1}>中级</Option>
-                      <Option value={2}>高级</Option>
+                      <Option value={0}>简单</Option>
+                      <Option value={1}>中等</Option>
+                      <Option value={2}>困难</Option>
                     </Select>
                   )}
                 </FormItem>
@@ -280,10 +288,10 @@ class Paper extends React.Component {
         }}
         dataSource={this.state.data}
         renderItem={(item) =>{
-          let difficulty='初级'
-          if(item.difficulty==1){difficulty='中级'} else if(item.difficulty==2){difficulty='高级'}
+          let difficulty='简单'
+          if(item.difficulty==1){difficulty='中等'} else if(item.difficulty==2){difficulty='困难'}
           return (     
-          <List.Item actions={[<Button  type="primary"><Link to={`/main/add_paper/choose_question/${item.id}`}>添加试题</Link></Button>,<Button  onClick={this.changePaper.bind(this,item)}>修改试卷</Button>, <Button type="danger" onClick={this.deletePaper.bind(this,item.id)}>删除</Button>]}>
+          <List.Item actions={[<Button  type="primary"><Link to={`/main/add_paper/choose_question/${item.id}/${item.subjectId}/${item.totalScore}`}>添加试题</Link></Button>,<Button  onClick={this.changePaper.bind(this,item)}>修改试卷</Button>, <Button type="danger" onClick={this.deletePaper.bind(this,item.id)}>删除</Button>]}>
               <List.Item.Meta         
                 title={"试卷名称:"+item.name}
                 description={"试卷描述:"+item.describe}
@@ -292,7 +300,7 @@ class Paper extends React.Component {
                 title={"科目:"+item.subjectName}              
               />
                 <List.Item.Meta  style={{marginLeft:-400}}        
-                title={"目标总分:"+item.totalScore}              
+                title={"试卷分数:"+item.score+"/"+item.totalScore}              
               />
                 <List.Item.Meta  style={{marginLeft:-400}}        
                 title={"难度:"+difficulty}              
@@ -300,8 +308,8 @@ class Paper extends React.Component {
           </List.Item>
         )}}
       /> 
-
-      <Modal
+{
+  this.state.visibleChangeModal  && <Modal
       title="修改试卷"
       visible={this.state.visibleChangeModal}
       onCancel={this.changeCancel.bind(this)}
@@ -347,9 +355,9 @@ class Paper extends React.Component {
                   {getFieldDecorator('Ndifficulty',{
                      initialValue:this.state.curSelectPaper.difficulty})(
                     <Select style={{ width: 120 }} >
-                      <Option value={0}>初级</Option>
-                      <Option value={1}>中级</Option>
-                      <Option value={2}>高级</Option>
+                      <Option value={0}>简单</Option>
+                      <Option value={1}>中等</Option>
+                      <Option value={2}>困难</Option>
                     </Select>
                   )}
                 </FormItem>
@@ -398,7 +406,7 @@ class Paper extends React.Component {
                 </Col>
               </Row>
           </Form>
-      </Modal>
+      </Modal>}
       </div>
     )
   }

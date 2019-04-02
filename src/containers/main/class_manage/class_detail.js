@@ -23,7 +23,6 @@ class ClassDetail  extends React.Component{
             defaultCurrent : 1,
           },
           sno:'',
-        //   curSelectClass : {}
     
         }
         this.searchKey = "1";//搜索  1名字 2学号
@@ -216,8 +215,8 @@ addStudent(){
               </Select>
               <Button type="primary" className="f-r m-r-20" ><Link to={`/main/class_manage/query_class`}>返回</Link></Button>
               <Button type="primary" className="f-l" onClick={this.showAllStudent.bind(this)}>所有学生</Button>
-              <Button  className="f-l m-l-60" onClick={this.addStudent}   placeholder="请输入学号" >添加学生</Button>
-              <Input  style={{ width: '20%' }} onChange={this.handleInputChange} value={this.state.sno} ></Input>        
+              <Button  className="f-l m-l-60" onClick={this.addStudent}    >添加学生</Button>
+              <Input placeholder="请输入学号"  style={{ width: '20%' }} onChange={this.handleInputChange} value={this.state.sno} ></Input>        
               <span style={{marginLeft:200}} >班级名称: {this.props.match.params.className}  老师:{this.props.match.params.teacherName}</span>
             </Col>
           </Row>

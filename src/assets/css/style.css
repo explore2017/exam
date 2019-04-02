@@ -244,3 +244,10 @@
 .content{
   margin-top:10px;
 }
+.paper{
+  min-height: 916px;
+  max-width: 60%;
+  margin: 0px auto;
+  background: rgb(255, 255, 255);
+  width: 60%;
+}
