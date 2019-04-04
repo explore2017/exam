@@ -79,17 +79,17 @@
   margin-top: 50px
 }
 
-.login .login-form-button {
+.login-form-button {
   width: 100%;
 }
 
-.login .login-from {
+ .login-from {
   width: 80%;
   margin: 0 auto;
   margin-top: 50px
 }
 
-.login .login-tip {
+ .login-tip {
   color: red;
   margin-bottom: 10px
 }
@@ -250,4 +250,42 @@
   margin: 0px auto;
   background: rgb(255, 255, 255);
   width: 60%;
+}
+
+.student_login{
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-image: url('../images/timg.jpg');
+  background-size: cover;
+  min-height: 580px;
+  min-width: 800px
+}
+
+.student_login .login-content{
+  width: 360px;
+  height: 580px;
+    margin: auto;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top:50%;
+  font-size: 12px;
+  transform: translateY(-50%);
+}
+.student_login .login-content-wrap {
+  position: absolute;
+  width: 460px;
+  height: 100%;
+  min-height: 580px;
+  left: 40%;
+}
+.student_login .logo {
+  display: block;
+  margin: 0 auto;
+  margin-top: 50px;
+  width:40%;
 }

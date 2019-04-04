@@ -127,11 +127,11 @@ class Main extends React.Component {
 
 	componentWillMount(){
 		//判断用户是否已经登录
-		if(!localStorage.getItem("userName")) {
+		if(!localStorage.getItem("userName")||!(localStorage.getItem("role")=="teacher"||localStorage.getItem("role")=="manage")) {
 			this.props.history.push('/login');//跳转至登录页
 		}
 
-		this.setState({roleSet : localStorage.getItem("roleSet")})
+		this.setState({roleSet : localStorage.getItem("role")})
 
 		//获取科目信息
 		get(URL.subject_info)	
@@ -192,9 +192,6 @@ class Main extends React.Component {
 						  <span>试题录入</span>	
 							</Link>
 					    </Menu.Item>
-							{/* <SubMenu key="q_checkin" title={<span><Icon type="form" /><span>试题录入</span></span>}>
-								{subjectArr}
-							</SubMenu> */}
 							<Menu.Item key="choose_questions">
 								<Link to="/main/add_paper">
 			            <Icon type="profile" />

@@ -6,6 +6,7 @@ import * as URL from '@components/interfaceURL.js'
 const { TextArea } = Input;
 import Title from 'antd/lib/typography/Title';
 const Option = Select.Option;
+
 const RadioGroup = Radio.Group;
 
 class ShowPaper extends React.Component {
@@ -17,7 +18,7 @@ class ShowPaper extends React.Component {
         this.questionShow=this.questionShow.bind(this);
       }
   getPaperQuestion(){
-        get(URL.get_paper_question,{paperId:this.props.match.params.paperId})
+        get(URL.get_paper_question,{paperId:this.props.paperId})
         .then((res)=>{
           if(res.status==0){ 
             this.setState({questionArr:res.data.question});
@@ -120,6 +121,7 @@ class ShowPaper extends React.Component {
                 </Card>) 
             }
     }
+
     componentDidMount(){
        this.getPaperQuestion();
     }
@@ -131,15 +133,10 @@ class ShowPaper extends React.Component {
               })
             }
           return(
-              <div id="content" style={{background:"#AAAAAA"}}> 
-               <Anchor getContainer={() => document.getElementById('content')} > 
-               <Link  href="#1" title="Basic demo" /> 
-               </Anchor>                    
-              <div class="paper">
-              <Title style={{textAlign:"center"}} level={2}>timu</Title>
-              <Divider ></Divider>          
+              <div >                 
+              <div >           
               {questionCard}                    
-               </div>                                  
+               </div>                                    
               </div> 
              )
            }

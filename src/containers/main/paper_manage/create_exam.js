@@ -32,17 +32,7 @@ class CreateExam extends React.Component {
     this.havePaperName ++;
     if(this.havePaperName == 2) {
       this.havePaperName = 0;
-      httpServer({
-        url : URL.get_paperId
-      },{
-        className : 'GetPaperIdImpl',
-        classId : this.classId,
-        gradeId : this.levelId,
-      })
-      .then((res)=>{
-        let respData = res.data.data;
-        this.setState({paperIdList : respData})
-      })
+    
     }
   }
 
@@ -104,7 +94,7 @@ class CreateExam extends React.Component {
     if(this.props.classinfo.classArr) {
       classtArr = this.props.classinfo.classArr.map((item)=>{
         return (
-          <Option value={item.classId} key={item.classId}>{item.className}</Option>
+          <Option value={item.id} key={item.id}>{item.name}</Option>
         )
       })
     }

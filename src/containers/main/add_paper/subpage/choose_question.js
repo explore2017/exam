@@ -3,9 +3,11 @@ import {Row,Col,Input,Progress, Icon,Select, InputNumber,Radio,Button,Card,Tag,C
 import { get,DELETE,post,put } from '@components/axios.js';
 import { Link } from 'react-router-dom';
 import * as URL from '@components/interfaceURL.js'
+import ShowPaper from '../../paper_manage/show_paper.js'
 import { Breadcrumb } from 'antd';
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
+const confirm = Modal.confirm;
  class ChooseQuestion extends React.Component {
   constructor(){
     super()
@@ -30,12 +32,15 @@ const RadioGroup = Radio.Group;
       },
       realScore:0,
       selectData:[],
-      visibleChangeModal: false,//查询结果是否显示      
+      visibleChangeModal: false,//查询结果是否显示   
+      visiblePaperModal:false, //预览试卷是否显示   
     }
     this.questionShow=this.questionShow.bind(this);
     this.handleChangeScore=this.handleChangeScore.bind(this);
     this.searchQuestion=this.searchQuestion.bind(this);
     this.changeCancel=this.changeCancel.bind(this);
+    this.handleSaveClick=this.handleSaveClick.bind(this);
+    this.handleShowPaper=this.handleShowPaper.bind(this);
   }
   
   getPaperQuestion(){
@@ -67,8 +72,15 @@ const RadioGroup = Radio.Group;
               secondary: parseInt((secondary/sum)*100),
               higher: parseInt((higher/sum)*100),
             }
+          })        
+        }else{
+          this.setState({
+            difficulty:{
+              primary: 0,
+              secondary: 0,
+              higher: 0,
+            }
           })
-         
         }
         res.data.paperCompose.map((item)=>{
           score+=item.singleScore;
@@ -280,6 +292,28 @@ handleChangeSequence(operand,record){
   })
 }
 
+handleSaveClick(){
+  if(this.state.realScore==this.props.match.params.totalScore){
+    this.props.history.push("/main/add_paper");
+  }else{
+    confirm({
+      title: '试卷当前分数未满足预设分数，您确定要退出吗',
+      okText : '确定',
+      cancelText : '取消',
+      onOk:()=>{
+        this.props.history.push("/main/add_paper");
+      },
+    });
+  }
+
+}
+
+handleShowPaper(){
+  this.setState({
+    visiblePaperModal:true
+  });
+}
+
 
   render(){
    let questionCard=[];
@@ -366,11 +400,18 @@ handleChangeSequence(operand,record){
    
     return( 
       <div>
+        
         <Breadcrumb>
         <Breadcrumb.Item ><Link to={`/main/add_paper`}>生成试卷</Link></Breadcrumb.Item>
-        <Breadcrumb.Item >添加试题</Breadcrumb.Item>     
-        </Breadcrumb>  
-          <Button type="primary" className="f-r m-r-20" ><Link to={`/main/add_paper`}>保存</Link></Button>
+        <Breadcrumb.Item >添加试题</Breadcrumb.Item>   
+        </Breadcrumb> 
+        <div>
+          
+        <Button onClick={this.handleSaveClick} type="primary" className="f-r m-r-20" >保存</Button>
+        <Button  onClick={()=>{this.setState({visiblePaperModal:true})}} className="f-r m-r-20" >预览试卷</Button>
+
+        </div>
+        
         <div >
         <Form onSubmit={this.searchQuestion} layout="inline">
           <Form.Item
@@ -410,15 +451,14 @@ handleChangeSequence(operand,record){
           <Form.Item style={{marginLeft:"50px"}} >
           <h3>{"试卷分数:"+this.state.realScore+"/"+this.props.match.params.totalScore}</h3>
           </Form.Item>  
-
-          <Form.Item style={{marginLeft:"50px"}} label="简单" >
-          <Progress strokeColor="#33FF33" type="circle" percent={this.state.difficulty.primary} width={80} />
+          <Form.Item style={{marginLeft:"20px",marginBottom:"10px"}} label="简单" >
+          <Progress status="normal" strokeColor="#33FF33" type="circle" percent={this.state.difficulty.primary} width={80} />
           </Form.Item> 
-          <Form.Item style={{marginLeft:"50px"}} label="中等" >
-          <Progress   type="circle" percent={this.state.difficulty.secondary} width={80} />
+          <Form.Item style={{marginLeft:"20px",marginBottom:"10px"}} label="中等" >
+          <Progress status="normal"   type="circle" percent={this.state.difficulty.secondary} width={80} />
           </Form.Item> 
-          <Form.Item style={{marginLeft:"50px"}} label="困难" >
-          <Progress strokeColor="#FF3333" type="circle" percent={this.state.difficulty.higher} width={80} />
+          <Form.Item style={{marginLeft:"20px",marginBottom:"10px"}} label="困难" >
+          <Progress status="normal" strokeColor="#FF3333" type="circle" percent={this.state.difficulty.higher} width={80} />
           </Form.Item> 
 
      
@@ -442,7 +482,16 @@ handleChangeSequence(operand,record){
               columns={columns2}
               dataSource={this.state.selectData}         
             />
-          </Modal>  
+          </Modal>
+          <Modal
+        width={1000}
+         visible={this.state.visiblePaperModal}
+         onCancel={()=>{this.setState({visiblePaperModal:false})}}
+         destroyOnClose={true}
+         footer={null}
+        >
+             <ShowPaper paperId={this.props.match.params.paperId}/>
+        </Modal>  
       </div>    
     )
   }

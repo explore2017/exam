@@ -89,7 +89,7 @@ export const get_paperId = baseUrl;
 
 export const get1_papers = "data/get_papers.json";
 
-
+export const student_login="/student/login";
 //管理员登录
 export const  login = "/student/login";
 //得到科目信息
