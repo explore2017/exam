@@ -152,6 +152,8 @@ export const change_class = "class/reviseclass";
 export const add_class = "class/addclass";
 //添加班级
 export const add_class_student = "class/addstudent";
+// 获取个人所属班级
+export const my_class = "student/myclass";
 
 //查询教师（得到一页数据）
 export const get_teacher = "/manage/Teachers";

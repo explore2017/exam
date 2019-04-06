@@ -3,6 +3,7 @@ import axios from "axios";
 import qs from "qs";
 import {Modal,message} from 'antd'
 
+axios.defaults.withCredentials=true;
 
 // 创建axios默认请求
 axios.defaults.baseURL = "http://localhost:8000";
