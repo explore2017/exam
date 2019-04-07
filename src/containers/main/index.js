@@ -260,9 +260,8 @@ class Main extends React.Component {
 							<Route path="/main/paper_manage/scoring/all_papers/reading_paper/:paperId/:classId/:instId" component={ReadingPaper}/>
 							<Route path="/main/paper_manage/scoring/all_papers/:paperId/:classId/:managerId" component={AllPapers}/>
 							<Route path="/main/paper_manage/scoring" component={ScoringPaper}/>
-						
 
-
+					
 							{/* 个人中心 */}
 							<Route path="/main/personal_center/change_password" component={ChangePassword}/>
 

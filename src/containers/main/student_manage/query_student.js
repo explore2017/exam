@@ -311,7 +311,7 @@ addClass(){
                 enterButton
                 style={{ width: 200 }}
               />
-              <Select className="f-r m-r-20" defaultValue="1" style={{ width: 120 }} onChange={this.handleChange.bind(this)}>
+              <Select className="f-r m-r-20" defaultValue={1} style={{ width: 120 }} onChange={this.handleChange.bind(this)}>
                 <Option value={1}>姓名</Option>
                 <Option value={2}>学号</Option>
                 <Option value={3}>班级</Option>
