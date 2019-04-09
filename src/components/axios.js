@@ -119,6 +119,3 @@ function successState(res) {
       })
       return promise
   }
-
-  
- 
