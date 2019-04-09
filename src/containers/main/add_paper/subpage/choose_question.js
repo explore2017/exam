@@ -12,7 +12,7 @@ const confirm = Modal.confirm;
   constructor(){
     super()
     this.state = {
-      questionArr:[],
+      questionVoArr:[],
       question:{
         id:0,
         questionTypeId:0,     // 0 选择题 1 判断题 2 多选题 3 填空题  4 简答题 5 分析题
@@ -51,16 +51,17 @@ const confirm = Modal.confirm;
          let primary=0;
          let secondary=0;
          let higher=0;
-        res.data.question.map((item,index)=>{
-          item.sequence=index+1;
-          if(item.difficulty==1){
-            item.difficulty="中等";
+        res.data.map((item)=>{
+          item.sequence++;
+          score+=item.singleScore;
+          if(item.question.difficulty==1){
+            item.question.difficulty="中等";
             secondary++;
-          }else if(item.difficulty==2){
-            item.difficulty="困难";
+          }else if(item.question.difficulty==2){
+            item.question.difficulty="困难";
             higher++;
           }else{
-            item.difficulty="简单";
+            item.question.difficulty="简单";
             primary++;
           }
         })
@@ -82,11 +83,9 @@ const confirm = Modal.confirm;
             }
           })
         }
-        res.data.paperCompose.map((item)=>{
-          score+=item.singleScore;
-       })
+
         this.setState({
-          questionArr: res.data.question,
+          questionVoArr: res.data,
           realScore:score,
         });
       }
@@ -316,12 +315,12 @@ handleShowPaper(){
 
 
   render(){
-   let questionCard=[];
-   if(this.state.questionArr.length!==0){
-    this.state.questionArr.map((item,index)=>{
-           questionCard.push(this.questionShow(item,index));
-     })
-   }
+  //  let questionCard=[];
+  //  if(this.state.questionVoArr.length!==0){
+  //   this.state.questionVoArr.map((item,index)=>{
+  //          questionCard.push(this.questionShow(item,index));
+  //    })
+  //  }
    const { getFieldDecorator } = this.props.form;
 
 
@@ -331,27 +330,27 @@ handleShowPaper(){
     key: 'sequence',
   },{
     title: '题目类型',
-    dataIndex: 'title',
+    dataIndex: 'question.title',
     key: 'title',
   }, {
     title: '难度',
-    dataIndex: 'difficulty',
+    dataIndex: 'question.difficulty',
     key: 'difficulty',
   },{
     title: '知识点',
-    dataIndex: 'keyPoint',
+    dataIndex: 'question.keyPoint',
     key: 'keyPoint',
   },{
     title: '题干',
-    dataIndex: 'content',
+    dataIndex: 'question.content',
     key: 'content',
     width: 450
-  },{
+  },{ 
     title: '分值',
     key: 'score',
     render: (text, record) => (
       <span>
-       <InputNumber  onChange={value =>this.handleChangeScore(value,record.id)} min={0} defaultValue={record.defaultScore?record.defaultScore:0}  style={{width:"20%"}}></InputNumber>
+       <InputNumber  onChange={value =>this.handleChangeScore(value,record.question.id)} min={0} defaultValue={record.singleScore?record.singleScore:0}  style={{width:"20%"}}></InputNumber>
       </span>
     ),
   }, {
@@ -468,7 +467,7 @@ handleShowPaper(){
         <Table
               rowKey="id"
               columns={columns1}
-              dataSource={this.state.questionArr}            
+              dataSource={this.state.questionVoArr}            
             />
         </div> 
         <Modal  width={800}

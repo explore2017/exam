@@ -87,7 +87,7 @@ export const get_paperId = baseUrl;
 
 
 
-export const get1_papers = "data/get_papers.json";
+export const get_subject_papers = "paper/class";
 
 export const student_login="/student/login";
 //管理员登录
@@ -105,6 +105,8 @@ export const get_question_condition = "/question/condition";
 
 //出卷
 export const add_paper = "paper";
+//随机出卷
+export const add_random_papers = "paper/random";
 
 export const get_paper_score = "paper/details/score";
 
