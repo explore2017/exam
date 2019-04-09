@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form,Input,Select,Row,Col,Button,DatePicker,Radio,Modal,Table, InputNumber   } from 'antd';
+import { Form,Input,Select,Row,Col,Button,DatePicker,Radio,Modal,Table, InputNumber,Statistic   } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -20,18 +20,29 @@ class CreateExam extends React.Component {
     this.state = {
       pathList : ['考试管理','创建考试'],//面包屑路径
       classId : 0,
-      levelId : 0,
       paperList : [],
       paperModel:0,
       showId:-1,      //用来展示的paper的Id
       paperId:'',
+        singeNumber:0,
+        judgeNumber:0,
+        multipleNumber:0,
+        shortNumber:0,
+        completionNumber:0,
+        analysisNumber:0,       
         difficulty:0,
         singeKeyPoint:'',
         judgeKeyPoint:'',
         multipleKeyPoint:'',
         shortKeyPoint:'',
         completionKeyPoint:'',
-        analysisPoint:'',
+        analysisKeyPoint:'',
+        singescore:0,
+        judgescore:0,
+        multiplescore:0,
+        shortscore:0,
+        completionscore:0,
+        analysisscore:0,
       visibleChangeModal:false,         //展示试卷
       visiblePaperModal:false,          //切换出卷模式
       visibleDesginModal:false,  
@@ -101,23 +112,32 @@ class CreateExam extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-      let describe= JSON.stringify({
-          singeNumber:values.singeNumber?singeNumber:0,
+      let describe='';
+      describe= JSON.stringify({
+          singeNumber:this.state.singeNumber,
           singeKeyPoint:this.state.singeKeyPoint,
-          judgeNumber:values.judgeNumber?judgeNumber:0,
+          singescore:this.state.singescore,
+          judgeNumber:this.state.judgeNumber,
           judgeKeyPoint:this.state.judgeKeyPoint,
-          multipleNumber:values.multipleNumber?multipleNumber:0,
+          judgescore:this.state.judgescore,
+          multipleNumber:this.state.multipleNumber,
           multipleKeyPoint:this.state.multipleKeyPoint,
-          completionNumber:values.completionNumber?completionNumber:0,
+          multiplescore:this.state.multiplescore,
+          completionNumber:this.state.completionNumber,
           completionKeyPoint:this.state.completionKeyPoint,
-          shortNumber:values.shortNumber?shortNumber:0,
+          completionscore:this.state.completionscore,
+          shortNumber:this.state.shortNumber,
           shortKeyPoint:this.state.shortKeyPoint,
-          analysisNumber:values.analysisNumber?analysisNumber:0,
-          analysisKeyPoint:this.state.analysisKeyPoint,   
+          shortscore:this.state.shortscore,
+          analysisNumber:this.state.analysisNumber,
+          analysisKeyPoint:this.state.analysisKeyPoint,  
+          analysisscore:this.state.analysisscore, 
         })
+       let desginScore=(this.state.singeNumber*this.state.singescore)+(this.state.judgeNumber*this.state.judgescore)+(this.state.multipleNumber*this.state.multiplescore)
+    +(this.state.completionNumber*this.state.completionscore)+(this.state.shortNumber*this.state.shortscore)+(this.state.analysisNumber*this.state.analysisscore);
       post(URL.add_random_papers,{
         subjectId:values.classId,
-        totalScore:values.paperScore,
+        totalScore:desginScore,
         difficulty:this.state.difficulty,
         describe:describe, 
       }).then((res)=>{
@@ -132,6 +152,8 @@ class CreateExam extends React.Component {
       this.setState({ visibleDesginModal:false});
     });
   }
+
+ 
 
 
   render(){
@@ -158,9 +180,10 @@ class CreateExam extends React.Component {
         md: { span: 18 }
       },
     }
+       
 
 
-    const columns = [{
+    const column1 = [{
       title: '试卷名称',
       dataIndex: 'name',
       key: 'name',
@@ -168,7 +191,6 @@ class CreateExam extends React.Component {
       title: '试卷描述',
       dataIndex: 'describe',
       key: 'describe',
-      width: 600
     }, {
       title: '操作',
       key: 'action',
@@ -186,6 +208,7 @@ class CreateExam extends React.Component {
     }];
 
 
+
     //班级信息
     let classtArr = [];
     if(this.props.classinfo.classArr) {
@@ -196,6 +219,8 @@ class CreateExam extends React.Component {
       })
     }
 
+    let desginScore=(this.state.singeNumber*this.state.singescore)+(this.state.judgeNumber*this.state.judgescore)+(this.state.multipleNumber*this.state.multiplescore)
+    +(this.state.completionNumber*this.state.completionscore)+(this.state.shortNumber*this.state.shortscore)+(this.state.analysisNumber*this.state.analysisscore);
     return(
       <div>
         <BreadcrumbCustom pathList={this.state.pathList}></BreadcrumbCustom>
@@ -304,11 +329,12 @@ class CreateExam extends React.Component {
               })
             }}
           >
-           <Table
+          <Table
               rowKey="id"
-              columns={columns}
+              columns={column1}
               dataSource={this.state.paperList}         
             />
+       
           </Modal>
           <Modal
         width={1000}
@@ -334,8 +360,7 @@ class CreateExam extends React.Component {
              {...formItemLayoutTop}
               label="试卷分数:"
             >
-             {getFieldDecorator('paperScore',{initialValue:100})(
-            <InputNumber min={0} ></InputNumber>)}
+          <InputNumber style={{width:100}} disabled={true} value={desginScore}></InputNumber>
             <span style={{marginLeft:20}}>试卷难度：</span>
             <Select defaultValue={0} onChange={(value)=>{this.setState({
                  difficulty:value
@@ -349,8 +374,9 @@ class CreateExam extends React.Component {
              {...formItemLayoutTop}
               label="单选题数量:"
             >
-             {getFieldDecorator('singeNumber',{initialValue:0})(
-            <InputNumber min={0} ></InputNumber>)}
+            <InputNumber  precision={0} defaultValue={0} min={0}  onChange={(value)=>this.setState({singeNumber:value?value:0})}></InputNumber>
+            <span style={{marginLeft:20}}>分数：</span>              
+            <InputNumber  precision={1}   defaultValue={0} min={0}  onChange={(value)=>this.setState({singescore:value?value:0})} style={{width:100}}></InputNumber>
             <span style={{marginLeft:20}}>知识点：</span>              
             <Input  onChange={(e)=>this.setState({singeKeyPoint:e.target.value})} style={{width:150,marginLeft:0}}></Input>
             </FormItem>
@@ -358,8 +384,9 @@ class CreateExam extends React.Component {
              {...formItemLayoutTop}
               label="判断题数量:"
             >
-             {getFieldDecorator('judgeNumber',{initialValue:0})(
-            <InputNumber min={0} ></InputNumber>)}
+            <InputNumber  precision={0} defaultValue={0} min={0}  onChange={(value)=>this.setState({judgeNumber:value?value:0})}></InputNumber>
+            <span style={{marginLeft:20}}>分数：</span>              
+            <InputNumber  precision={1} defaultValue={0} min={0}  onChange={(value)=>this.setState({judgescore:value?value:0})} style={{width:100}}></InputNumber>
             <span style={{marginLeft:20}}>知识点：</span>
             <Input onChange={(e)=>this.setState({judgeKeyPoint:e.target.value})} style={{width:150,marginLeft:0}}></Input>
             </FormItem>
@@ -368,8 +395,9 @@ class CreateExam extends React.Component {
              {...formItemLayoutTop}
               label="多选题数量:"
             >
-             {getFieldDecorator('multipleNumber',{initialValue:0})(
-            <InputNumber min={0} ></InputNumber>)}
+            <InputNumber  precision={0} defaultValue={0} min={0}  onChange={(value)=>this.setState({multipleNumber:value?value:0})}></InputNumber>
+            <span style={{marginLeft:20}}>分数：</span>              
+            <InputNumber  precision={1} defaultValue={0} min={0}  onChange={(value)=>this.setState({multiplescore:value?value:0})} style={{width:100}}></InputNumber>
             <span style={{marginLeft:20}}>知识点：</span>
             <Input onChange={(e)=>this.setState({multipleKeyPoint:e.target.value})} style={{width:150,marginLeft:0}}></Input>
             </FormItem>
@@ -377,8 +405,9 @@ class CreateExam extends React.Component {
              {...formItemLayoutTop}
               label="填空题数量:"
             >
-             {getFieldDecorator('completionNumber',{initialValue:0})(
-            <InputNumber min={0} ></InputNumber>)}
+            <InputNumber  precision={0} defaultValue={0} min={0}  onChange={(value)=>this.setState({completionNumber:value?value:0})}></InputNumber>
+            <span style={{marginLeft:20}}>分数：</span>              
+            <InputNumber  precision={1} defaultValue={0} min={0}  onChange={(value)=>this.setState({completionscore:value?value:0})} style={{width:100}}></InputNumber>
             <span style={{marginLeft:20}}>知识点：</span>
             <Input onChange={(e)=>this.setState({completionKeyPoint:e.target.value})} style={{width:150,marginLeft:0}}></Input>
             </FormItem>
@@ -386,8 +415,9 @@ class CreateExam extends React.Component {
              {...formItemLayoutTop}
               label="简答题数量:"
             >
-             {getFieldDecorator('shortNumber',{initialValue:0})(
-            <InputNumber min={0} ></InputNumber>)}
+            <InputNumber  precision={0} defaultValue={0} min={0}  onChange={(value)=>this.setState({shortNumber:value?value:0})}></InputNumber>
+            <span style={{marginLeft:20}}>分数：</span>              
+            <InputNumber  precision={1} defaultValue={0} min={0}  onChange={(value)=>this.setState({shortscore:value?value:0})} style={{width:100}}></InputNumber>
             <span style={{marginLeft:20}}>知识点：</span>
      
             <Input onChange={(e)=>this.setState({shortKeyPoint:e.target.value})} style={{width:150,marginLeft:0}}></Input>
@@ -396,10 +426,11 @@ class CreateExam extends React.Component {
              {...formItemLayoutTop}
               label="分析题数量:"
             >
-             {getFieldDecorator('analysisNumber',{initialValue:0})(
-            <InputNumber min={0}></InputNumber>)}
+            <InputNumber  precision={0} defaultValue={0} min={0}  onChange={(value)=>this.setState({analysisNumber:value?value:0})}></InputNumber>
+            <span style={{marginLeft:20}}>分数：</span>              
+            <InputNumber  precision={1} defaultValue={0} min={0}  onChange={(value)=>this.setState({analysisscore:value?value:0})} style={{width:100}}></InputNumber>
             <span style={{marginLeft:20}}>知识点：</span>
-            <Input onChange={(e)=>this.setState({analysisPoint:e.target.value})} style={{width:150,marginLeft:0}}></Input>
+            <Input onChange={(e)=>this.setState({analysisKeyPoint:e.target.value})} style={{width:150,marginLeft:0}}></Input>
             </FormItem>      
 </Form>
             
