@@ -56,6 +56,7 @@ class StudentLogin extends React.Component {
 								<FormItem>
 									{getFieldDecorator('sno', {
 										rules: [{ required: true, message: '请输入学号！' }],
+										initialValue:'1600300818'
 									})(
 										<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="学号" />
 									)}
@@ -63,6 +64,7 @@ class StudentLogin extends React.Component {
 								<FormItem>
 									{getFieldDecorator('password', {
 										rules: [{ required: true, message: '请输入密码！' }],
+										initialValue:'123456'
 									})(
 										<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="密码" />
 									)}

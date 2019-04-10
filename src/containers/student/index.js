@@ -1,15 +1,12 @@
 import React from 'react'
 import { Menu, Icon, Button } from 'antd';
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
-//路由组件
 import { Route, Link, Switch } from 'react-router-dom';
 import HeaderBar from './header_bar/index.js';
 import MyClass from './class'
 import MyInfo from './center/info'
 import Exam from './exam/enroll'
-import * as URL from '@components/interfaceURL.js'
-import { get } from '@components/axios.js';
+import MyExam from './exam/me'
+const SubMenu = Menu.SubMenu;
 
 class Student extends React.Component {
 	constructor() {
@@ -18,7 +15,6 @@ class Student extends React.Component {
 			roleSet: '',
 		}
 	}
-
 
 	componentWillMount() {
 		//判断用户是否已经登录
@@ -29,7 +25,6 @@ class Student extends React.Component {
 		// this.setState({roleSet : localStorage.getItem("roleSet")})
 	}
 
-
 	render() {
 		return (
 			<div>
@@ -38,7 +33,7 @@ class Student extends React.Component {
 				>
 					<img 
 						className="logo" 
-						src={require("@assets/images/exam.png")} 
+						src={require("@assets/images/explore.jpg")} 
 					/>
 					<div>
 						<Menu
@@ -50,12 +45,12 @@ class Student extends React.Component {
 								<span><Link to="/student/class">我的班级</Link></span>
 							</Menu.Item>
 							<Menu.Item key="enroll">
-								<Icon type="pie-chart" />
+								<Icon type="profile" />
 								<span><Link to="/student/exam/enroll">报名考试</Link></span>
 							</Menu.Item>
 							<Menu.Item key="exam">
-								<Icon type="pie-chart" />
-								<span><Link to="/student/class">我的考试</Link></span>
+								<Icon type="solution" />
+								<span><Link to="/student/exam/me">我的考试</Link></span>
 							</Menu.Item>
 							<SubMenu key="center" title={<span><Icon type="user" /><span>个人中心</span></span>}>
 								<Menu.Item key="info"><Link to="/student/center/info">个人信息</Link></Menu.Item>
@@ -69,6 +64,7 @@ class Student extends React.Component {
 					<div className="right-box">
 						<Route path="/student/class" component={MyClass} />
 						<Route path="/student/exam/enroll" component={Exam} />
+						<Route path="/student/exam/me" component={MyExam} />
 						<Route path="/student/center/info" component={MyInfo} />
 					</div>
 				</div>
@@ -76,7 +72,5 @@ class Student extends React.Component {
 		)
 	}
 }
-
-
 
 export default Student

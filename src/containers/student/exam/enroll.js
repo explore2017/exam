@@ -14,6 +14,10 @@ class Index extends React.Component {
 	}
 
 	componentDidMount() {
+		this.initData();
+	}
+
+	initData() {
 		const api = 'http://localhost:8000/student/exam';
 		get(api, {}).then((res) => {
 			this.setState({
@@ -22,18 +26,19 @@ class Index extends React.Component {
 		});
 	}
 
-	enroll(record) {
-		console.log(record);
+	handleEnroll(record) {
 		const api = 'http://localhost:8000/student/batch/enroll';
 		post(api,
 			{ id: record.id });
+		this.initData();
 	}
 
-	handleExitClass(e) {
-		DELETE(URL.delete_class_student,
-			{ classNo: e.classNo });
+	handleCancel(record) {
+		const api = 'http://localhost:8000/student/batch/cancel';
+		post(api,
+			{ id: record.id });
+		this.initData();
 	}
-
 
 	render() {
 
@@ -70,13 +75,15 @@ class Index extends React.Component {
 						if (record.hasSelected) {
 							return (
 								<span className="table-operation">
-									<a style={{color:'red'}} onClick={() => this.enroll(record)} href="javascript:;">取消</a>
+									<Popconfirm title="你确定要取消吗?" onConfirm={() => this.handleCancel(record)} okText="Yes" cancelText="No">
+										<a style={{ color: 'red' }} href="javascript:;">取消</a>
+									</Popconfirm>
 								</span>
 							)
 						} else {
-							return(
+							return (
 								<span className="table-operation">
-									<a onClick={() => this.enroll(record)} href="javascript:;">报名</a>
+									<a onClick={() => this.handleEnroll(record)} href="javascript:;">报名</a>
 								</span>
 							)
 						}
@@ -131,12 +138,11 @@ class Index extends React.Component {
 					</Breadcrumb.Item>
 					<Breadcrumb.Item href="">
 						<Icon type="user" />
-						<span>考试列表</span>
+						<span>报名考试</span>
 					</Breadcrumb.Item>
-					<Breadcrumb.Item>详情</Breadcrumb.Item>
+					<Breadcrumb.Item>考试列表</Breadcrumb.Item>
 				</Breadcrumb>
 				<Card style={{ minHeight: 500 }}>
-					<div style={{ marginTop: 20 }}>
 						<Table
 							pagination={false}
 							defaultExpandAllRows
@@ -144,7 +150,6 @@ class Index extends React.Component {
 							columns={columns}
 							dataSource={this.state.list}
 						/>
-					</div>
 				</Card>
 			</div>
 		]
