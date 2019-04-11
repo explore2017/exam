@@ -45,9 +45,8 @@ import ClassDetail from './class_manage/class_detail.js';
 
 //考试管理组件
 import CreateExam from './paper_manage/create_exam.js';
-import ScoringPaper from './paper_manage/scoring_paper.js';
-import AllPapers from './paper_manage/all_papers.js';
-import ReadingPaper from './paper_manage/reading_paper.js';
+import QueryExam from './paper_manage/query_exam.js';
+import ExamDetails from './paper_manage/exam_details';
 import ShowPaper from './paper_manage/show_paper.js';
 
 //个人中心
@@ -112,8 +111,8 @@ class Main extends React.Component {
 			let arr = this.props.location.pathname.split('/');
 			let str = arr[arr.length-1];
 			this.setState({defaultSelectedKeys : [str]})
-			if(this.props.location.pathname.indexOf('scoring') != -1) {
-				this.setState({defaultSelectedKeys : ['scoring']})
+			if(this.props.location.pathname.indexOf('query_exam') != -1) {
+				this.setState({defaultSelectedKeys : ['query_exam']})
 			}
 		}
 		else if(this.props.location.pathname.indexOf('/main/personal_center') != -1) {//个人中心
@@ -221,7 +220,7 @@ class Main extends React.Component {
 							</SubMenu>
 							<SubMenu key="paper_manage" title={<span><Icon type="desktop" /><span>考试管理</span></span>}>
 								<Menu.Item key="create_exam"><Link to="/main/paper_manage/create_exam">创建考试</Link></Menu.Item>
-								<Menu.Item key="scoring"><Link to="/main/paper_manage/scoring">在线阅卷</Link></Menu.Item>
+								<Menu.Item key="query_exam"><Link to="/main/paper_manage/query_exam">我的考试</Link></Menu.Item>
 							</SubMenu>
 							<SubMenu key="personal_center" title={<span><Icon type="user" /><span>个人中心</span></span>}>
 								<Menu.Item key="change_password"><Link to="/main/personal_center/change_password">修改密码</Link></Menu.Item>
@@ -257,9 +256,8 @@ class Main extends React.Component {
 
 							{/* 考试管理 */}
 							<Route path="/main/paper_manage/create_exam" component={CreateExam}/>
-							<Route path="/main/paper_manage/scoring/all_papers/reading_paper/:paperId/:classId/:instId" component={ReadingPaper}/>
-							<Route path="/main/paper_manage/scoring/all_papers/:paperId/:classId/:managerId" component={AllPapers}/>
-							<Route path="/main/paper_manage/scoring" component={ScoringPaper}/>
+							<Route path="/main/paper_manage/exam_details/:examId" component={ExamDetails}/>
+							<Route path="/main/paper_manage/query_exam" component={QueryExam}/>
 
 					
 							{/* 个人中心 */}

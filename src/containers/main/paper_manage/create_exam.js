@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form,Input,Select,Row,Col,Button,List,DatePicker,Radio,Modal,Table, InputNumber,Statistic, Card   } from 'antd';
+import { Form,Input,Select,Row,Col,Button,Icon,List,DatePicker,Radio,Modal,Table, InputNumber,Statistic, Card   } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -52,6 +52,7 @@ class CreateExam extends React.Component {
     this.choosePaper=this.choosePaper.bind(this);
     this.randomPaper=this.randomPaper.bind(this);
     this.addBatch=this.addBatch.bind(this);
+    this.deleteBatch=this.deleteBatch.bind(this);
   }
 
   //选择班级
@@ -201,6 +202,12 @@ class CreateExam extends React.Component {
     })
     
   }
+
+deleteBatch(index){
+   let  oldBatches=[...this.state.batches];
+   oldBatches.splice(index,1);
+   this.setState({batches:oldBatches});
+}
  
 
 
@@ -266,13 +273,7 @@ class CreateExam extends React.Component {
         )
       })
     }
-    let batchCards=[];
-    this.state.batches.map((item,index)=>{
-             if(index%3==0){
 
-             }
-    })
- 
     let desginScore=(this.state.singeNumber*this.state.singescore)+(this.state.judgeNumber*this.state.judgescore)+(this.state.multipleNumber*this.state.multiplescore)
      +(this.state.completionNumber*this.state.completionscore)+(this.state.shortNumber*this.state.shortscore)+(this.state.analysisNumber*this.state.analysisscore);
     return(
@@ -368,7 +369,7 @@ class CreateExam extends React.Component {
     dataSource={this.state.batches}
     renderItem={(item,index) => (
       <List.Item>
-        <Card title={"批次"+(index+1)}>
+        <Card title={"批次"+(index+1)} extra={<Icon onClick={this.deleteBatch} type="close"></Icon>}>
         <div>{"最大人数:"+item.maxNumber}</div>
         <div>{"开始时间:"+item.startTime}</div>
         <div>{"结束时间:"+item.endTime}</div>

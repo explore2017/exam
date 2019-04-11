@@ -171,6 +171,18 @@ export const add_teacher = "/manage/insertTeacher?";
 //创建考试
 export const create_exam = "exam";
 
+//老师获得考试
+export const get_manage_exam = "exam";
+
+//老师获得考试批次
+export const get_exam_batch = "exam/batch";
+
+//老师添加考试批次
+export const add_exam_batch = "exam/batch";
+
+//删除考试
+export const delete_manage_exam= "exam/";
+
 //查询试卷（得到一页数据）
 export const get_papers = "paper";
 
