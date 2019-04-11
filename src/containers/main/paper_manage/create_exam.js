@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form,Input,Select,Row,Col,Button,DatePicker,Radio,Modal,Table, InputNumber,Statistic   } from 'antd';
+import { Form,Input,Select,Row,Col,Button,List,DatePicker,Radio,Modal,Table, InputNumber,Statistic, Card   } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -8,11 +8,10 @@ import { connect } from 'react-redux'
 import BreadcrumbCustom from '@components/BreadcrumbCustom'
 import httpServer from '@components/httpServer.js'
 import * as URL from '@components/interfaceURL.js'
-import moment from 'moment';
-import 'moment/locale/zh-cn';
 import { get,post  } from '@components/axios.js';
 import ShowPaper from '../paper_manage/show_paper.js'
-moment.locale('zh-cn');
+import locale from 'antd/lib/date-picker/locale/zh_CN';
+
 
 class CreateExam extends React.Component {
   constructor(){
@@ -20,6 +19,7 @@ class CreateExam extends React.Component {
     this.state = {
       pathList : ['考试管理','创建考试'],//面包屑路径
       classId : 0,
+      batches:[],       //batch数组
       paperList : [],
       paperModel:0,
       showId:-1,      //用来展示的paper的Id
@@ -45,11 +45,13 @@ class CreateExam extends React.Component {
         analysisscore:0,
       visibleChangeModal:false,         //展示试卷
       visiblePaperModal:false,          //切换出卷模式
-      visibleDesginModal:false,  
+      visibleDesginModal:false, 
+      visibleBatchModal:false,
     }
     this.havePaperName = 0;
     this.choosePaper=this.choosePaper.bind(this);
     this.randomPaper=this.randomPaper.bind(this);
+    this.addBatch=this.addBatch.bind(this);
   }
 
   //选择班级
@@ -67,17 +69,37 @@ class CreateExam extends React.Component {
   //表单提交
   handleSubmit(e) {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(['classId', 'examName','signEndTime', 'signStartTime'],(err, values) => {
       if (!err) {
-        httpServer({
-          url : URL.create_exam
-        },{
-          className : 'CreateTestImpl',
-          classId : values.classId,
-          paperId : values.paperId,
-          startTime : values.startTime.format('YYYY-MM-DD HH:mm:ss'),
-          endTime : values.endTime.format('YYYY-MM-DD HH:mm:ss'),
-          examName : values.examName,
+        const {batches,paperId}=this.state;
+        if(paperId==undefined||paperId==null||paperId==""){
+          Modal.error({
+            title: '出错了',
+            content: '请选择选择试卷或随机出卷',
+          });
+          return;
+        }
+        if(batches==undefined||batches==null||batches.length==0){
+          Modal.error({
+            title: '出错了',
+            content: '请选择最少一个批次',
+          });
+          return;
+        } 
+         if(values.signEndTime<values.signStartTime){
+          Modal.error({
+            title: '出错了',
+            content: '考试报名开始时间应比考试报名结束时间早',
+          });
+          return;
+        }   
+        post(URL.create_exam,{
+          classId :values.classId,
+          paperId : parseInt(paperId),
+          subscribe:JSON.stringify(batches),
+          name : values.examName,
+          startTime:values.signStartTime.format('YYYY-MM-DD HH:mm'),
+          endTime:values.signEndTime.format('YYYY-MM-DD HH:mm'),
         })
       }
     });
@@ -85,7 +107,7 @@ class CreateExam extends React.Component {
 
   choosePaper(e){
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(['classId', 'examName'],(err, values) => {
       if (!err) {
       get(URL.get_subject_papers,{
         classId:values.classId
@@ -110,7 +132,7 @@ class CreateExam extends React.Component {
 
   randomPaper(e){
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(['classId'],(err, values) => {
       if (!err) {
       let describe='';
       describe= JSON.stringify({
@@ -153,6 +175,32 @@ class CreateExam extends React.Component {
     });
   }
 
+  addBatch(e){
+    e.preventDefault();
+    this.props.form.validateFields(['maxNumber', 'startTime','endTime'],(err, values) => {
+          if(!err){
+            if(values.endTime<values.startTime){
+              Modal.error({
+                title: '出错了',
+                content: '考试开始时间应比考试结束时间早',
+              });
+              return;
+            }  
+            let batch={
+              maxNumber:values.maxNumber,
+              startTime:values.startTime.format('YYYY-MM-DD HH:mm'),
+              endTime:values.endTime.format('YYYY-MM-DD HH:mm'),
+            }
+            const {batches}=this.state
+            let newBatches=[...batches,batch];
+            this.setState({
+              batches:newBatches,
+              visibleBatchModal:false,
+            })
+          }
+    })
+    
+  }
  
 
 
@@ -218,9 +266,15 @@ class CreateExam extends React.Component {
         )
       })
     }
+    let batchCards=[];
+    this.state.batches.map((item,index)=>{
+             if(index%3==0){
 
+             }
+    })
+ 
     let desginScore=(this.state.singeNumber*this.state.singescore)+(this.state.judgeNumber*this.state.judgescore)+(this.state.multipleNumber*this.state.multiplescore)
-    +(this.state.completionNumber*this.state.completionscore)+(this.state.shortNumber*this.state.shortscore)+(this.state.analysisNumber*this.state.analysisscore);
+     +(this.state.completionNumber*this.state.completionscore)+(this.state.shortNumber*this.state.shortscore)+(this.state.analysisNumber*this.state.analysisscore);
     return(
       <div>
         <BreadcrumbCustom pathList={this.state.pathList}></BreadcrumbCustom>
@@ -248,21 +302,7 @@ class CreateExam extends React.Component {
             })(
                 <Input />
               )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="级别"
-            >
-              {getFieldDecorator('level',{
-                initialValue:0
-              })(
-                <Select  style={{ width: '100%' }} >
-                  <Option value={0}>初级</Option>
-                  <Option value={1}>中级</Option>
-                  <Option value={2}>高级</Option>
-                </Select>
-              )}
-            </FormItem >
+            </FormItem>      
             <FormItem 
             {...formItemLayout}
               label="出卷模式"
@@ -286,34 +326,61 @@ class CreateExam extends React.Component {
              <Input value={this.state.paperId} disabled={true} style={{ width: 430}} placeholder="请设计试卷"></Input> 
              <Button type="primary" style={{marginTop:0,marginLeft:20}} onClick={()=>{this.setState({visibleDesginModal:true})}} >设计试卷</Button>
               </FormItem> }
-            <FormItem
+              <FormItem
               {...formItemLayout}
-              label="开始时间"
+              label="考试报名开始时间"
             >
-              {getFieldDecorator('startTime')(
+              {getFieldDecorator('signStartTime',{rules: [{ required: true, message: '请选择考试报名开始时间'}]})(
                 <DatePicker
                   showTime
-                  format="YYYY-MM-DD HH:mm:ss"
+                  format="YYYY-MM-DD HH:mm"
                   placeholder="选择时间"
                   style={{width:'100%'}}
+                  locale={locale}
                 />
               )}
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label="结束时间"
+              label="考试报名结束时间"
             >
-              {getFieldDecorator('endTime')(
+              {getFieldDecorator('signEndTime',{rules: [{ required: true, message: '请选择考试报名结束时间'}]})(
                 <DatePicker
                   showTime
-                  format="YYYY-MM-DD HH:mm:ss"
+                  format="YYYY-MM-DD HH:mm"
                   placeholder="选择时间"
                   style={{width:'100%'}}
                 />
               )}
             </FormItem>
+              <FormItem
+              {...formItemLayout}
+              label="添加批次:"
+            > 
+           <Button  style={{marginTop:0}} type="primary" onClick={()=>this.setState({visibleBatchModal:true})}>添加批次</Button>      
+            </FormItem>      
+              <FormItem
+              {...formItemLayout}
+              label="已有批次:"
+            > 
+             <List
+    grid={{ gutter: 16, column: 2 }}
+    dataSource={this.state.batches}
+    renderItem={(item,index) => (
+      <List.Item>
+        <Card title={"批次"+(index+1)}>
+        <div>{"最大人数:"+item.maxNumber}</div>
+        <div>{"开始时间:"+item.startTime}</div>
+        <div>{"结束时间:"+item.endTime}</div>
+        </Card>
+      </List.Item>
+    )}
+  />        
+            </FormItem>     
+        
             <Row>
               <Col span={12} offset={4}>
+              
                 <Button type="primary" htmlType="submit" className="f-r">确定</Button>
               </Col>
             </Row>
@@ -435,7 +502,55 @@ class CreateExam extends React.Component {
 </Form>
             
         </Modal>    
+        <Modal
+        title="添加批次"
+        width={800}
+         visible={this.state.visibleBatchModal}
+         onCancel={()=>{this.setState({visibleBatchModal:false})}}
+         destroyOnClose={true}
+         onOk={this.addBatch}
+         cancelText="取消"  
+         okText="确定"
+
+        >
+           <FormItem
+              {...formItemLayout}
+              label="最大人数"
+            >
+              {getFieldDecorator('maxNumber', {
+              rules: [{ required: true, message: '请输入人数'}],
+              initialValue:0})(
+              <InputNumber precision={0} min={0} ></InputNumber>)}
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="开始时间"
+            >
+              {getFieldDecorator('startTime',{rules: [{ required: true, message: '请选择开始时间'}]})(
+                <DatePicker
+                  showTime
+                  format="YYYY-MM-DD HH:mm"
+                  placeholder="选择时间"
+                  style={{width:'100%'}}
+                />
+              )}
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="结束时间"
+            >
+              {getFieldDecorator('endTime',{rules: [{ required: true, message: '请选择结束时间'}]})(
+                <DatePicker
+                  showTime
+                  format="YYYY-MM-DD HH:mm"
+                  placeholder="选择时间"
+                  style={{width:'100%'}}
+                />
+              )}
+            </FormItem>
+        </Modal>
         </div>
+
       </div>
     )
   }

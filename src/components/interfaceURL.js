@@ -169,7 +169,7 @@ export const delete_teacher = "/manage/deleteTeacher/";
 export const add_teacher = "/manage/insertTeacher?";
 
 //创建考试
-export const create_exam = "data/create_exam.json";
+export const create_exam = "exam";
 
 //查询试卷（得到一页数据）
 export const get_papers = "paper";
