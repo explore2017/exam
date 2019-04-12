@@ -55,7 +55,6 @@ class QueryExam extends React.Component {
      let newData=[];
      console.log(value)
      this.state.initialData.map((item)=>{
-         console.log(item.exam.name)
        if(this.searchKey==1){ 
         if(item.exam.name!==null){                 //筛选的条件
        if(item.exam.name.indexOf(value)!=-1){
@@ -168,42 +167,34 @@ class QueryExam extends React.Component {
     const columns = [{
       title: '考试名称',
       dataIndex: 'exam.name',
-      key: 'name',
     },{
       title: '考试班级',
       dataIndex: 'class.name',
-      key: 'class',
     },,{
         title: '考试科目',
         dataIndex: 'subject.name',
-        key: 'subject',
       },{
       title: '老师',
       dataIndex: 'teacher.name',
-      key: 'teacher',
     }, {
       title: '报名开始时间',
       dataIndex: 'exam.startTime',
-      key: 'startTime',
     }, {
         title: '报名结束时间',
         dataIndex: 'exam.endTime',
-        key: 'endTime',
       },{
       title: '考试详情',
-      key: 'details',
       render: ( record) => (
         <span>
           <Button size="small" >
           <Link
-              to={`/main/paper_manage/exam_details/${record.exam.id}`}
+              to={`/main/exam_manage/exam_details/${record.exam.id}`}
             >查看考试详情</Link>
           </Button>
         </span>
       ),
     }, {
       title: '操作',
-      key: 'action',
       render: (text, record) => (
         <span>
           <Button type="danger" size="small" onClick={this.deleteExam.bind(this,record)}>删除</Button>
@@ -260,7 +251,7 @@ class QueryExam extends React.Component {
           </Row>
           <div className="m-t-20">
             <Table
-              rowKey="exam.id"
+              rowKey={(record)=>(record.exam.id)}
               columns={columns}
               dataSource={this.state.data}
               pagination={this.state.pagination}

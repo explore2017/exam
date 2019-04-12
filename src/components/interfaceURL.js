@@ -180,6 +180,16 @@ export const get_exam_batch = "exam/batch";
 //老师添加考试批次
 export const add_exam_batch = "exam/batch";
 
+//老师删除考试批次
+export const delete_exam_batch = "exam/batch/";
+
+//老师获得批次详细信息
+export const get_batch_details = "exam/batch/details";
+
+
+export const delete_batch_student = "exam/batch/details/";
+
+
 //删除考试
 export const delete_manage_exam= "exam/";
 

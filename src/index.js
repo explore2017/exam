@@ -6,7 +6,7 @@ import 'antd/dist/antd.css'
 import './assets/css/style.css'
 import login from './containers/login/index.js'
 import main from './containers/main/index.js'
-import ShowPaper from './containers/main/paper_manage/show_paper'
+import ShowPaper from './containers/main/exam_manage/show_paper'
 import StudentLogin from './containers/student/login.js';
 import Student from './containers/student/index.js';
 import { HashRouter,BrowserRouter,Route,Link,Switch  } from 'react-router-dom'

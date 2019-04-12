@@ -9,7 +9,7 @@ import BreadcrumbCustom from '@components/BreadcrumbCustom'
 import httpServer from '@components/httpServer.js'
 import * as URL from '@components/interfaceURL.js'
 import { get,post  } from '@components/axios.js';
-import ShowPaper from '../paper_manage/show_paper.js'
+import ShowPaper from '../exam_manage/show_paper.js'
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 
 

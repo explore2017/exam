@@ -44,10 +44,11 @@ import QueryClass from './class_manage/query_class.js';
 import ClassDetail from './class_manage/class_detail.js';
 
 //考试管理组件
-import CreateExam from './paper_manage/create_exam.js';
-import QueryExam from './paper_manage/query_exam.js';
-import ExamDetails from './paper_manage/exam_details';
-import ShowPaper from './paper_manage/show_paper.js';
+import CreateExam from './exam_manage/create_exam.js';
+import QueryExam from './exam_manage/query_exam.js';
+import ExamDetails from './exam_manage/exam_details';
+import BatchDetails from './exam_manage/batch_details';
+import ShowPaper from './exam_manage/show_paper.js';
 
 //个人中心
 import ChangePassword from './personal_center/change_password';
@@ -66,7 +67,7 @@ class Main extends React.Component {
 			subjectArr:[],//科目数组
 			roleSet : '',
 		}
-		this.rootSubmenuKeys = ['q_checkin', 'student_manage','teacher_manage','paper_manage','personal_center','class_manage'];
+		this.rootSubmenuKeys = ['q_checkin', 'student_manage','teacher_manage','exam_manage','personal_center','class_manage'];
 	}
 
 	//根据路由判断 用户选择了菜单中的哪一项
@@ -105,9 +106,9 @@ class Main extends React.Component {
 			let str = arr[arr.length-1];
 			this.setState({defaultSelectedKeys : [str]})
 		}
-		else if(this.props.location.pathname.indexOf('/main/paper_manage') != -1) {//考试管理
-			this.setState({defaultOpenKeys : ['paper_manage']})
-			this.setState({openKeys : ['paper_manage']})
+		else if(this.props.location.pathname.indexOf('/main/exam_manage') != -1) {//考试管理
+			this.setState({defaultOpenKeys : ['exam_manage']})
+			this.setState({openKeys : ['exam_manage']})
 			let arr = this.props.location.pathname.split('/');
 			let str = arr[arr.length-1];
 			this.setState({defaultSelectedKeys : [str]})
@@ -218,9 +219,9 @@ class Main extends React.Component {
 								<Menu.Item key="add_class"><Link to="/main/class_manage/add_class">添加班级</Link></Menu.Item>
 								<Menu.Item key="query_class"><Link to="/main/class_manage/query_class">查询班级</Link></Menu.Item>
 							</SubMenu>
-							<SubMenu key="paper_manage" title={<span><Icon type="desktop" /><span>考试管理</span></span>}>
-								<Menu.Item key="create_exam"><Link to="/main/paper_manage/create_exam">创建考试</Link></Menu.Item>
-								<Menu.Item key="query_exam"><Link to="/main/paper_manage/query_exam">我的考试</Link></Menu.Item>
+							<SubMenu key="exam_manage" title={<span><Icon type="desktop" /><span>考试管理</span></span>}>
+								<Menu.Item key="create_exam"><Link to="/main/exam_manage/create_exam">创建考试</Link></Menu.Item>
+								<Menu.Item key="query_exam"><Link to="/main/exam_manage/query_exam">我的考试</Link></Menu.Item>
 							</SubMenu>
 							<SubMenu key="personal_center" title={<span><Icon type="user" /><span>个人中心</span></span>}>
 								<Menu.Item key="change_password"><Link to="/main/personal_center/change_password">修改密码</Link></Menu.Item>
@@ -255,9 +256,10 @@ class Main extends React.Component {
 							<Route path="/main/class_manage/query_class" component={QueryClass}/>
 
 							{/* 考试管理 */}
-							<Route path="/main/paper_manage/create_exam" component={CreateExam}/>
-							<Route path="/main/paper_manage/exam_details/:examId" component={ExamDetails}/>
-							<Route path="/main/paper_manage/query_exam" component={QueryExam}/>
+							<Route path="/main/exam_manage/create_exam" component={CreateExam}/>
+							<Route path="/main/exam_manage/exam_details/:examId/:batchId" component={BatchDetails}/>
+							<Route path="/main/exam_manage/exam_details/:examId" component={ExamDetails}/>
+							<Route path="/main/exam_manage/query_exam" component={QueryExam}/>
 
 					
 							{/* 个人中心 */}

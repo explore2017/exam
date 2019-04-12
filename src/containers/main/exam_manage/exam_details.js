@@ -95,7 +95,7 @@ addBatch(e){
       okText : '确定',
       cancelText : '取消',
       onOk:()=>{
-        DELETE(URL.delete_class_student,record.id,{classId:this.props.match.params.classId})
+        DELETE(URL.delete_exam_batch,record.batch.id)
         .then((res)=>{
           if(res.status==0)
           { 
@@ -129,23 +129,18 @@ addBatch(e){
     const columns = [{
       title: '姓名',
       dataIndex: 'batch.name',
-      key: 'name',
     },{
       title: '批次人数',
       dataIndex: 'number',
-      key: 'number',
     },{
       title: '批次最大人数',
       dataIndex: 'batch.maxNumber',
-      key: 'maxNumber',
     },{
       title: '考试开始时间',
       dataIndex: 'batch.startTime',
-      key: 'startTime',
     }, {
       title: '考试结束时间',
       dataIndex: 'batch.endTime',
-      key: 'endTime',
     },{
       title: '批次详情',
       key: 'details',
@@ -153,7 +148,7 @@ addBatch(e){
         <span>
           <Button size="small" >
           <Link
-              to={``}
+              to={`/main/exam_manage/exam_details/${this.props.match.params.examId}/${record.batch.id}`}
             >查看批次详情</Link>
           </Button>
         </span>
@@ -179,18 +174,14 @@ addBatch(e){
       <div>
         <Breadcrumb>
         <Breadcrumb.Item >考试管理</Breadcrumb.Item>  
-        <Breadcrumb.Item ><Link to={`/main/paper_manage/query_exam`}>我的考试</Link></Breadcrumb.Item>
-        <Breadcrumb.Item >考试批次</Breadcrumb.Item>   
+        <Breadcrumb.Item ><Link to={`/main/exam_manage/query_exam`}>我的考试</Link></Breadcrumb.Item>
+        <Breadcrumb.Item >考试批次</Breadcrumb.Item> 
+        <Button  className="f-r m-r-20" type="primary" onClick={()=>this.setState({visibleBatchModal:true})}>添加批次</Button>  
         </Breadcrumb> 
         <div className="class-manage-content">
-          <Row>
-            <Col span={24}>
-              <Button  className="f-r m-r-20" type="primary" onClick={()=>this.setState({visibleBatchModal:true})}>添加批次</Button>     
-            </Col>
-          </Row>
           <div className="m-t-20">
             <Table
-              rowKey="id"
+              rowKey={record=>record.batch.id}
               columns={columns}
               dataSource={this.state.data}
               pagination={this.state.pagination}

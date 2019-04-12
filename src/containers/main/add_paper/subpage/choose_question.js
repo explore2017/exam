@@ -3,7 +3,7 @@ import {Row,Col,Input,Progress, Icon,Select, InputNumber,Radio,Button,Card,Tag,C
 import { get,DELETE,post,put } from '@components/axios.js';
 import { Link } from 'react-router-dom';
 import * as URL from '@components/interfaceURL.js'
-import ShowPaper from '../../paper_manage/show_paper.js'
+import ShowPaper from '../../exam_manage/show_paper.js'
 import { Breadcrumb } from 'antd';
 const Option = Select.Option;
 const RadioGroup = Radio.Group;

@@ -46,7 +46,7 @@ export default class Homepage extends React.Component {
           </Link>
         </div>
         <div className="fast-enter-card">
-          <Link to="/main/paper_manage/scoring">
+          <Link to="/main/exam_manage/scoring">
             <FastEnterCard title="在线阅卷  " icon="desktop"></FastEnterCard>
           </Link>
         </div>
