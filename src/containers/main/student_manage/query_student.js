@@ -155,10 +155,7 @@ addClass(){
           }
         }
       })
-     }
-    
-  
-    
+     }   
     //TODO : 第一次点击this.state.curSelectTeacher为空
     this.setState({curSelectStudent : record,classes:classes})
     const {form}=this.props;

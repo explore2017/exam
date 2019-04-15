@@ -29,15 +29,14 @@ class Index extends React.Component {
 	handleEnroll(record) {
 		const api = 'http://localhost:8000/student/batch/enroll';
 		post(api,
-			{ id: record.id });
-		this.initData();
+			{ id: record.id }).then(()=>this.initData())
+
 	}
 
 	handleCancel(record) {
 		const api = 'http://localhost:8000/student/batch/cancel';
 		post(api,
-			{ id: record.id });
-		this.initData();
+			{ id: record.id }).then(()=>this.initData())
 	}
 
 	render() {

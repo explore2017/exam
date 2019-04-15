@@ -1,20 +1,19 @@
 import React from 'react'
 import BreadcrumbCustom from '@components/BreadcrumbCustom'
 import { Form } from 'antd';
-import {Row,Col,Select,Input,Table, Icon, Divider,Button,Modal,InputNumber} from 'antd'
+import {Row,Col,Select,Input,Table, Icon, Divider,Button,Modal } from 'antd'
 const Option = Select.Option;
 const Search = Input.Search;
 const FormItem = Form.Item;
 const confirm = Modal.confirm;
-import {put,get,DELETE} from '@components/axios.js';
-import * as classinfoActions from '../../../actions/classinfo'
+import {put,post,get,DELETE} from '@components/axios.js';
 import { connect } from 'react-redux'
 import * as URL from '@components/interfaceURL.js'
-import { Link  } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from 'redux'
+import * as subjectinfoActions from '../../../actions/subjectinfo'
+import { Link } from 'react-router-dom';
 
-
-class QueryClass extends React.Component {
+class QuerySubject extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -28,59 +27,47 @@ class QueryClass extends React.Component {
         defaultCurrent : 1,
       },
       visibleChangeModal : false,//修改框是否显示
-      curSelectClass : {
+      curSelectSubject : {
         id:0,
         name:'',
-        subjectId:0,
-        teacherId:0,
-        classNo:'',
-        number:0,
-        subjectName:'',
-        className:'',
       },
-      subjectArr:this.props.subjectinfo.subjectArr||[],                                   //科目信息
+      subjectName:'',
     }
-
-    this.searchKey = "1";//搜索  1名字 2课程号 3学科
+    this.handleInputChange=this.handleInputChange.bind(this);
+    this.addSubject=this.addSubject.bind(this);  //增加班级
+    this.searchKey = "1";//搜索  1名字 2学号  3班级
     this.turnStatus = "NORMAL"; //NORMAL:正常翻页   SEARCH:搜索翻页
     this.searchContent = ""; //搜索内容
   }
 
   //得到数据
-  getClassDate(){
-    get(URL.get_class_info)
+  getSubjectDate(){
+    get(URL.get_subject)
     .then((res)=>{
       if(res.status==0){
         this.setState({
           initialData:res.data,
           data:res.data,     
-        });
-        this.props.classinfoActions.setClassInfo({
-          classArr: res.data.class
+        })
+        this.props.subjectinfoActions.setSubjectInfo({
+          subjectArr: this.state.subjectArr
         })
       }    
     })
+
   }
 
   //得到搜索的数据
   getSearchData(value){
      let newData=[];
-     this.state.initialData.map((item)=>{
-       if(this.searchKey==1){                  //筛选的条件
-       if(item.class.name==value){
-         newData.push(item);
+     this.state.initialData.map((item)=>{ //筛选的条件
+       if(this.searchKey==1){
+           if(item.name!=null){
+            if(item.name.indexOf(value)!=-1){
+                newData.push(item);
+              }
+           }                 
        }
-       }else if(this.searchKey==2){
-        if((item.class.classNo.toString()).indexOf(value)!=-1){
-          newData.push(item);
-        }
-       } else if(this.searchKey==3){ 
-         if(item.subjectName!==null){
-          if((item.subject.name.toString()).indexOf(value)!=-1){        
-            newData.push(item);
-          }
-         }             
-       }  
      })
      this.setState({data:newData});
 
@@ -96,34 +83,46 @@ class QueryClass extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.subjectinfo.subjectArr){
-      this.setState({subjectArr:nextProps.subjectinfo.subjectArr});
-    }
+
+
+//添加科目
+addSubject(){
+  const name=this.state.subjectName
+  if(name==undefined||name==null||name==''){
+    Modal.error({
+      title:"出错了",
+      content:"科目名称为空不能"
+    })
+    return;
+  }
+   post(URL.add_subject,{
+     name:this.state.subjectName
+    }).then((res)=>{
+       if(res.status==0){
+         this.getSubjectDate();
+       }
+    })
 }
 
 
-
   componentWillMount(){
-      this.getClassDate();
-  
+    this.getSubjectDate();
   }
 
   //删除
-  deleteClass(record){
+  deleteSubject(record){
     confirm({
       title: '你确定删除吗？',
       okText : '确定',
       cancelText : '取消',
       onOk:()=>{
-        DELETE(URL.delete_class,record.class.id)
+        DELETE(URL.delete_subject,record.id)
         .then((res)=>{
           if(res.status==0)
           { 
-           this.getClassDate();
+           this.getSubjectDate();
           }       
-        })
-  
+        }) 
       },
     });
 
@@ -131,9 +130,10 @@ class QueryClass extends React.Component {
   
     
   //点击修改
-  changeClass(record){
+  changeSubject(record){ 
+    
     //TODO : 第一次点击this.state.curSelectTeacher为空
-    this.setState({curSelectClass : record})
+    this.setState({curSelectSubject : record})
     const {form}=this.props;
     //重新设置修改模态框中三个选项的值
     form.setFieldsValue({'name': record.name});
@@ -147,22 +147,19 @@ class QueryClass extends React.Component {
 
   //确认修改
   changeOk(){
-    this.setState({visibleChangeModal:false})
-
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {            
-        put(URL.change_class,{
-         id:this.state.curSelectClass.id,
-         name:values.name,        
-         subjectId:values.subject,   
+        put(URL.change_subject,{
+         id:this.state.curSelectSubject.id,
+         name:values.name,         
         }).then((res)=>{
           if(res.status==0){
-            this.getClassDate();
+            this.getSubjectDate();
           }
         })     
       }
     });
-
+    this.setState({visibleChangeModal:false})
   }
 
   //搜索类型选择
@@ -170,8 +167,8 @@ class QueryClass extends React.Component {
     this.searchKey = value;
   }
 
-  //点击所有班级
-  showAllClass(){
+  //点击所有科目
+  showAllSubject(){
     this.turnStatus === "NORMAL";
     this.state.pagination.current = 1;//当前页置为第一页
   this.setState({
@@ -180,7 +177,7 @@ class QueryClass extends React.Component {
   }
 
   //点击搜索
-  searchClass(value) {
+  searchSubject(value) {
     if(value == "") {
       Modal.error({
         content: "搜索内容不能为空！",
@@ -196,54 +193,47 @@ class QueryClass extends React.Component {
 
   //选择某一行
   onSelectChange(selectedRowKeys) {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys });
   }
- 
+
+  handleInputChange(e){
+    this.setState({
+      subjectName:e.target.value
+    })
+}
+
+
+  
 
   render(){
     const { getFieldDecorator } = this.props.form;
 
     const columns = [{
-      title: '班级',
-      dataIndex: 'class.name',
-      key: 'name',
+      title: '科目编号',
+      dataIndex: 'id',
     },{
-      title: '班级号',
-      dataIndex: 'class.classNo',
-      key: 'classNo',
+      title: '科目名称',
+      dataIndex: 'name',
     },{
-      title: '科目',
-      dataIndex: 'subject.name',
-      key: 'subjectName',
-    }, {
-      title: '老师',
-      dataIndex: 'teacherName',
-      key: 'teacherName',
-    }, {
-      title: '班级人数',
-      dataIndex: 'class.number',
-      key: 'number',
-    },{
-      title: '班级详情',
+      title: '科目试题详情',
       key: 'details',
       render: ( record) => (
         <span>
-          <Button size="small">
+          <Button size="small" >
           <Link
-              to={`/main/class_manage/query_class/detail/${record.class.id}/${record.class.name}/${record.teacherName}`}
-            >查看班级详情</Link>
+              to={`/main/subject/${record.id}`}
+            >查看科目试题库</Link>
           </Button>
         </span>
       ),
-    }, {
+    },{
       title: '操作',
       key: 'action',
       render: (text, record) => (
         <span>
-          <Button type="danger" size="small" onClick={this.deleteClass.bind(this,record)}>删除</Button>
+          <Button type="danger" size="small" onClick={this.deleteSubject.bind(this,record)}>删除</Button>
           <Divider type="vertical" />
-          <Button size="small" onClick={this.changeClass.bind(this,record.class)}>修改</Button>
+          <Button size="small" onClick={this.changeSubject.bind(this,record)}>修改</Button>
         </span>
       ),
     }];
@@ -269,38 +259,30 @@ class QueryClass extends React.Component {
       },
     };
 
-    let subject = [];
-    this.state.subjectArr.map((item)=>{
-      subject.push(
-        <Option key={item.id} value={item.id}>{item.name}</Option>
-      )
-    })
-  
-
     return(
       <div>
-        <BreadcrumbCustom pathList={['班级管理','我的班级']}></BreadcrumbCustom>
+        <BreadcrumbCustom pathList={['科目管理']}></BreadcrumbCustom>
         <div className="class-manage-content">
           <Row>
             <Col span={24}>
               <Search
                 className="f-r"
                 placeholder="请输入关键字"
-                onSearch={this.searchClass.bind(this)}
+                onSearch={this.searchSubject.bind(this)}
                 enterButton
                 style={{ width: 200 }}
               />
               <Select className="f-r m-r-20" defaultValue={1} style={{ width: 120 }} onChange={this.handleChange.bind(this)}>
-                <Option value={1}>班级名称</Option>
-                <Option value={2}>班级号</Option>
-                <Option value={3}>科目</Option>
+                <Option value={1}>科目名称</Option>
               </Select>
-              <Button type="primary" className="f-l" onClick={this.showAllClass.bind(this)}>所有班级</Button>
+              <Button type="primary" className="f-l" onClick={this.showAllSubject.bind(this)}>所有科目</Button>
+              <Button  className="f-l m-l-60" onClick={this.addSubject}  >添加科目</Button>
+              <Input placeholder="请输入科目名称"  style={{ width: '20%' }} onChange={this.handleInputChange} value={this.state.subjectName} ></Input>  
             </Col>
           </Row>
           <div className="m-t-20">
             <Table
-              rowKey={record=>record.class.id}
+              rowKey="id"
               columns={columns}
               dataSource={this.state.data}
               pagination={this.state.pagination}
@@ -309,43 +291,30 @@ class QueryClass extends React.Component {
             />
           </div>
           <Modal
-            title="修改班级"
+            title="修改科目信息"
             visible={this.state.visibleChangeModal}
             footer={null}
             onCancel={this.changeCancel.bind(this)}
           >
             <Form onSubmit={this.changeOk.bind(this)}>
-
-              <FormItem
-                {...formItemLayout}
-                label="班级名称"
-              >
-              {getFieldDecorator('name',{
-                rules: [{ required: true, message: '班级名称不能为空！'}],
-                initialValue : this.state.curSelectClass.name
+                  
+         <FormItem
+         {...formItemLayout}
+         label="科目编号"
+         ><span>{this.state.curSelectSubject.id}</span>
+         </FormItem>
+         <FormItem
+         {...formItemLayout}
+         label="科目名称"
+         >
+        {getFieldDecorator('name',{
+                rules: [{ required: true, message: '科目名称不能为空！'}],
+                initialValue : this.state.curSelectSubject.name
               })(
-                <Input />
+                <Input/>
               )}
-              </FormItem>
-              <FormItem
-                {...formItemLayout}
-                label="班级号"
-              >
-                <span>{this.state.curSelectClass.classNo}</span>
-              </FormItem>
-              <FormItem
-            {...formItemLayout}
-              label="科目"
-            >          
-              {getFieldDecorator('subject',{
-                rules: [{ required: true, message: '科目不能为空！'}],
-                initialValue : this.state.curSelectClass.subjectId
-              })(
-                <Select size='default' style={{ width: 300 }}>               
-                   {subject}
-                </Select>
-              )}
-            </FormItem>
+         </FormItem>
+           
               <Row>
                 <Col span={24}>
                   <Button type="primary" className="f-r" htmlType="submit">
@@ -363,21 +332,19 @@ class QueryClass extends React.Component {
     )
   }
 }
-
-function mapStateToProps(state) {
-    return {
-      subjectinfo: state.subjectinfo,
-      classinfo:state.classinfo,
-
-    }
+function mapStateToProps() {
+  return {
+      
+  }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-      classinfoActions: bindActionCreators(classinfoActions, dispatch),
+    subjectinfoActions: bindActionCreators(subjectinfoActions,dispatch),
   }
 }
 
-export default connect(
-    mapStateToProps,mapDispatchToProps
-)(Form.create()(QueryClass))
+
+export default connect(mapStateToProps,
+  mapDispatchToProps
+)(Form.create()(QuerySubject))

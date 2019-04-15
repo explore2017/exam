@@ -25,7 +25,9 @@ import QCheckin from './q_checkin/index.js';
 //出卷
 import ChooseQuestions from './add_paper/subpage/choose_question';
 import Paper from './add_paper/index.js';
-
+//试题库和科目
+import QuerySubject from './subject_manage/index.js'
+import SubjectQuestion from './subject_manage/subject_question.js'
 
 //成绩查询
 import ScoreSearch from './score_search/index.js';
@@ -65,7 +67,7 @@ class Main extends React.Component {
 			defaultSelectedKeys : [],//菜单默认选择项
 			openKeys: [],//菜单打开项
 			subjectArr:[],//科目数组
-			roleSet : '',
+			roleSet : '1',
 		}
 		this.rootSubmenuKeys = ['q_checkin', 'student_manage','teacher_manage','exam_manage','personal_center','class_manage'];
 	}
@@ -131,10 +133,10 @@ class Main extends React.Component {
 			this.props.history.push('/login');//跳转至登录页
 		}
 
-		this.setState({roleSet : localStorage.getItem("role")})
+		// this.setState({roleSet : localStorage.getItem("role")})
 
 		//获取科目信息
-		get(URL.subject_info)	
+		get(URL.get_subject)	
 		.then((res)=>{
 			this.setState({subjectArr : res.data})
 			//状态存储
@@ -146,9 +148,13 @@ class Main extends React.Component {
 		//获取班级信息
 		get(URL.get_class_info)
     .then((res)=>{
+			let classes=[];
+			res.data.map((item)=>{
+				classes.push(item.class);
+			})
 			//状态存储
 			this.props.classinfoActions.setClassInfo({
-				classArr: res.data
+				classArr: classesg
 			})
     })
 
@@ -204,6 +210,12 @@ class Main extends React.Component {
 			            <span>成绩查询</span>
 								</Link>
 		          </Menu.Item>
+							<Menu.Item key="subject_manage">
+								<Link to="/main/subject">
+			            <Icon type="read" />
+			            <span>科目管理</span>
+								</Link>
+		          </Menu.Item>
 							<SubMenu key="student_manage" title={<span><Icon type="usergroup-add" /><span>学生管理</span></span>}>
 									<Menu.Item key="add_student"><Link to="/main/student_manage/add_student">添加学生</Link></Menu.Item>
 									<Menu.Item key="query_student"><Link to="/main/student_manage/query_student">查询学生</Link></Menu.Item>
@@ -247,7 +259,7 @@ class Main extends React.Component {
 							<Route path="/main/student_manage/query_student" component={QueryStudent}/>
 
 							{/* 教师管理 */}
-							<Route path="/main/teacher_manage/add_teacher" component={AddTeacher }/>
+							<Route path="/main/teacher_manage/add_teacher" component={AddTeacher}/>
 							<Route path="/main/teacher_manage/query_teacher" component={QueryTeacher}/>
 
 							{/* 班级管理 */}
@@ -260,7 +272,10 @@ class Main extends React.Component {
 							<Route path="/main/exam_manage/exam_details/:examId/:batchId" component={BatchDetails}/>
 							<Route path="/main/exam_manage/exam_details/:examId" component={ExamDetails}/>
 							<Route path="/main/exam_manage/query_exam" component={QueryExam}/>
-
+               
+								 {/*科目管理 */}
+							<Route path="/main/subject/:subjectId" component={SubjectQuestion}/>
+							<Route path="/main/subject" component={QuerySubject}/>
 					
 							{/* 个人中心 */}
 							<Route path="/main/personal_center/change_password" component={ChangePassword}/>

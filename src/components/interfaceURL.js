@@ -86,20 +86,33 @@ export const get_paperId = baseUrl;
 
 
 
+//得到科目信息
+export const get_subject = "/subject";
 
-export const get_subject_papers = "paper/class";
+export const get_subject_question= "/subject/question";
+
+//得到科目信息
+export const change_subject = "/subject";
+
+//添加科目
+export const add_subject = "/subject/addSubject";
+
+//删除科目
+export const delete_subject = "/subject/";
 
 export const student_login="/student/login";
 //管理员登录
 export const  login = "/student/login";
-//得到科目信息
-export const subject_info = "/subject/allSubject";
+
 //得到班级信息
 export const get_class_info = "/class/allclass";
 //得到知识点
 export const knowledge_point = "data/knowledgePoint.json";
 //提交题目信息（试题录入）
 export const add_question = "/question";
+
+//删除题目信息
+export const delete_question = "/question/";
 
 export const get_question_condition = "/question/condition";
 

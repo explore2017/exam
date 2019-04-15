@@ -283,7 +283,7 @@ addQuestion(record){
 handleChangeSequence(operand,record){
   put(URL.change_paper_sequence,{
   paperId:this.props.match.params.paperId,
-  questionId:record.id,
+  questionId:record.question.id,
   questionNum:operand,
   sequence:record.sequence-1
   }).then(()=>{

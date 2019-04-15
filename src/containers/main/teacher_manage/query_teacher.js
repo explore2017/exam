@@ -350,7 +350,7 @@ addSubject(){
               label="密码"
             >
               {getFieldDecorator('password', {
-              rules: [{ required: true, message: '名字不能为空！'}],
+              rules: [{ required: true, message: '密码不能为空！'}],
               initialValue:this.state.curSelectTeacher.password
             })(
                 <Input.Password  />
@@ -361,7 +361,7 @@ addSubject(){
                 label="姓名"
               >
               {getFieldDecorator('name',{
-                rules: [{ required: true, message: '密码不能为空！'}],
+                rules: [{ required: true, message: '姓名不能为空！'}],
                 initialValue : this.state.curSelectTeacher.name
               })(
                 <Input />
