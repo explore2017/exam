@@ -27,6 +27,7 @@ class StudentLogin extends React.Component {
 					.then((res) => {
 						if (res.status === 0) {//登录成功		
 							//本地存储用户名
+							localStorage.setItem("user",JSON.stringify(res.data));
 							localStorage.setItem("userName", values.sno);
 							localStorage.setItem("role", "student");
 							//跳转主页

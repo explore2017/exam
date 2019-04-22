@@ -6,6 +6,7 @@ import MyClass from './class'
 import MyInfo from './center/info'
 import Exam from './exam/enroll'
 import MyExam from './exam/me'
+import MyPassword from './center/password'
 const SubMenu = Menu.SubMenu;
 
 class Student extends React.Component {
@@ -66,6 +67,7 @@ class Student extends React.Component {
 						<Route path="/student/exam/enroll" component={Exam} />
 						<Route path="/student/exam/me" component={MyExam} />
 						<Route path="/student/center/info" component={MyInfo} />
+						<Route path="/student/center/password" component={MyPassword} />
 					</div>
 				</div>
 			</div>
