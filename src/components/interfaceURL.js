@@ -121,6 +121,8 @@ export const add_paper = "paper";
 //随机出卷
 export const add_random_papers = "paper/random";
 
+export const get_subject_papers = "paper/class"
+
 export const get_paper_score = "paper/details/score";
 
 export const delete_paper = "paper/";

@@ -39,9 +39,9 @@ class Index extends React.Component {
 	
 	render() {
 		const columns = [{
-			title: '班级编号',
-			dataIndex: 'classNo',
-			key: 'classNo',
+			title: '班级',
+			dataIndex: 'name',
+			key: 'name',
 		}, {
 			title: '老师',
 			dataIndex: 'teacherName',

@@ -154,7 +154,7 @@ class Main extends React.Component {
 			})
 			//状态存储
 			this.props.classinfoActions.setClassInfo({
-				classArr: classesg
+				classArr: classes
 			})
     })
 

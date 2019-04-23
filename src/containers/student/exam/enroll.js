@@ -44,8 +44,8 @@ class Index extends React.Component {
 		const expandedRowRender = (record) => {
 			const columns = [
 				{ title: '批次', dataIndex: 'name', key: 'name' },
-				{ title: '开始时间', dataIndex: 'startTime', key: 'startTime' },
-				{ title: '结束时间', dataIndex: 'endTime', key: 'endTime' },
+				{ title: '考试开始时间', dataIndex: 'startTime', key: 'startTime' },
+				{ title: '考试结束时间', dataIndex: 'endTime', key: 'endTime' },
 				{
 					title: '人数', dataIndex: 'maxNumber', key: 'maxNumber', render: (text, record) => {
 						return (
@@ -82,7 +82,7 @@ class Index extends React.Component {
 						} else {
 							return (
 								<span className="table-operation">
-									<a onClick={() => this.handleEnroll(record)} href="javascript:;">报名</a>
+									<a onClick={() => this.handleEnroll(record)} href="javascript:;">选择</a>
 								</span>
 							)
 						}
@@ -100,6 +100,10 @@ class Index extends React.Component {
 		};
 
 		const columns = [{
+				title: '班级',
+				dataIndex: 'itsClass.name',
+				key: 'itsClass.name',
+			},{
 			title: '考试名称',
 			dataIndex: 'name',
 			key: 'name',

@@ -9,6 +9,7 @@ import main from './containers/main/index.js'
 import ShowPaper from './containers/main/exam_manage/show_paper'
 import StudentLogin from './containers/student/login.js';
 import Student from './containers/student/index.js';
+import Reply from './containers/student/reply';
 import { HashRouter,BrowserRouter,Route,Link,Switch  } from 'react-router-dom'
 
 const store = configureStore()
@@ -23,6 +24,7 @@ ReactDOM.render((
 					<Route path="/paper/:paperId" component={ShowPaper}/>
 					<Route path="/student/login" component={StudentLogin}/>
 					<Route path="/student" component={Student}/>
+					<Route path="/reply/:batchId" exact component={Reply}/>
 				</Switch>
 			</div>
 		</HashRouter>
