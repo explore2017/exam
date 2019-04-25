@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Card, Radio, Tag, Input, Statistic, Row, Col, Button, Form } from 'antd'
+import { Card, Radio, Tag, Input, Statistic, Row, Col, Button, Form, Spin, Icon, message,Modal } from 'antd'
 import { get, post } from "@components/axios";
 const Countdown = Statistic.Countdown;
 const RadioGroup = Radio.Group;
@@ -12,30 +12,42 @@ class Index extends Component {
     this.state = {
       list: [],
       countDown: undefined,
-      batchId:undefined
+      batchId: undefined,
+      loading: true,
+      finished: false,
+      visible:false
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     let id = this.props.match.params.batchId;
     const api = 'http://localhost:8000/exam/batch/' + id + '/start';
-    get(api).then((res) => {
+    post(api).then((res) => {
       if (res.status == 0) {
         this.setState({
           list: res.data.data,
           countDown: res.data.countDown,
-          batchId:id
+          batchId: id,
+          loading: false
         })
-        this.interval = setInterval(() => this.monitor(), 60 *1000);
+        this.interval = setInterval(() => this.monitor(false), 60 * 1000);
+      } else {
+        this.setState({
+          finished: true
+        })
       }
     })
   }
 
-  monitor() {
+  monitor(isInitiative) {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         post('http://localhost:8000/exam/batch/' + this.state.batchId + '/monitor', {
           records: this.packageFormToObject(values)
+        }).then((res) => {
+          if (isInitiative) {
+            message.success('临时保存成功');
+          }
         });
       }
     })
@@ -47,26 +59,69 @@ class Index extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    this.setState({
+      visible:true
+    })
+  }
+
+  submit() {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         post('http://localhost:8000/exam/batch/' + this.state.batchId + '/submit', {
           records: this.packageFormToObject(values)
         }).then((res) => {
-          
+          if (res.status == 0) {
+            this.setState({
+              finished: true
+            })
+          }
         })
       }
     });
   }
 
-  packageFormToObject(values){
+  packageFormToObject(values) {
     let arr = [];
-        for (let i in values) {
-          let paperRecord = {};
-          paperRecord.sequence = i;
-          paperRecord.reply = values[i];
-          arr.push(paperRecord);
-        }
+    for (let i in values) {
+      let paperRecord = {};
+      paperRecord.sequence = i;
+      paperRecord.reply = values[i];
+      arr.push(paperRecord);
+    }
     return arr;
+  }
+
+  renderFinishedState(){
+    let questions = [];
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+          this.packageFormToObject(values).map((item)=>{
+            let reply = (item.reply).trim();
+            if(typeof reply == "undefined" || reply == null || reply == ""){
+              questions.push(<Button style={{marginRight:10}}>{item.sequence}</Button>)
+            }else{
+              questions.push(<Button style={{marginRight:10}} type='primary'>{item.sequence}</Button>)
+            }
+          })
+      }
+    })
+    return(
+      questions
+    )
+  }
+
+  onFinish() {
+    this.submit();
+  }
+
+  handleOk(){
+    this.submit();
+  }
+
+  handleCancel(){
+    this.setState({
+      visible: false,
+    });
   }
 
   render() {
@@ -74,14 +129,10 @@ class Index extends Component {
     const { getFieldDecorator } = this.props.form;
 
     let paper = [];
-
+  
     this.state.list.map((item, index) => {
       paper.push(questionShow(item, index))
-    })
-
-    function onFinish() {
-
-    }
+    });
 
     function isEmpty(obj) {
       if (typeof obj == "undefined" || obj == null || obj == "") {
@@ -136,7 +187,7 @@ class Index extends Component {
             </div>
             <FormItem>
               {getFieldDecorator(String(record.sequence), {
-                initialValue: isEmpty(record.reply) ? '' : record.reply
+                initialValue:isEmpty(record.reply) ? '' : record.reply
               })(
                 <RadioGroup >
                   <Radio className="selects" style={{ display: 'block' }} value="0">正确</Radio>
@@ -215,23 +266,51 @@ class Index extends Component {
       }
     }
 
-    return (
-      <div style={{ background: '#ECECEC', padding: 30 }}>
-        <Row gutter={16}>
-          <Col span={12}>
-            <Countdown style={{ position: 'fixed' }} title={'距离考试结束还有'} value={Date.now() + this.state.countDown} onFinish={onFinish} />
-          </Col>
-        </Row>
-        <div style={{ width: '60%', margin: 'auto', minWidth: 500 }}>
-          <Form onSubmit={this.handleSubmit.bind(this)}>
-            {paper}
-            <Card style={{ marginTop: 30 }}>
-              <Button icon="check" htmlType="submit" type="primary" style={{ float: 'right' }}>交卷</Button>
-            </Card>
-          </Form>
+    if (this.state.finished) {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <p><Icon style={{ fontSize: 34, marginTop: 100 }} type="smile" /></p>
+          <h2>考试已提交</h2>
         </div>
-      </div>
-    )
+      )
+    } else if (!this.state.loading) {
+      return (
+        <div style={{ background: '#ECECEC', padding: 30 }}>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Countdown style={{ position: 'fixed' }} title={'距离考试结束还有'} value={Date.now() + this.state.countDown} onFinish={() => this.onFinish()} />
+            </Col>
+          </Row>
+          <div style={{ width: '60%', margin: 'auto', minWidth: 500 }}>
+            <Form onSubmit={this.handleSubmit.bind(this)}>
+              {paper}
+              <Card style={{ marginTop: 30 }}>
+                <Button icon="check" htmlType="submit" type="primary" style={{ float: 'right', marginLeft: 20 }}>交卷</Button>
+                <Button icon="save" type="primary" onClick={() => this.monitor(true)} style={{ float: 'right' }}>临时保存</Button>
+              </Card>
+            </Form>
+          </div>
+          <Modal
+            title="提示"
+            visible={this.state.visible}
+            onOk={()=>this.handleOk()}
+            onCancel={()=>this.handleCancel()}
+            okText='确认提交'
+            cancelText='取消'
+          >
+            {this.renderFinishedState()}
+          </Modal>
+        </div>
+      )
+    } else {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <p><Spin size="large" indicator={<Icon type="smile" style={{ fontSize: 34, marginTop: 100 }} spin />} /></p>
+          <p>正在加载</p>
+        </div>
+      )
+    }
+
   }
 }
 

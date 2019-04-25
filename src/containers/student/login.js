@@ -10,7 +10,8 @@ class StudentLogin extends React.Component {
 	constructor() {
 		super()
 		this.state = {
-			loginTip: ''
+			loginTip: '',
+			loading:false
 		}
 	}
 
@@ -19,12 +20,18 @@ class StudentLogin extends React.Component {
 
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
+				this.setState({
+					loading:true
+				})
 				post(URL.student_login,
 					{
 						username: values.sno,
 						password: values.password
 					})
 					.then((res) => {
+						this.setState({
+							loading:false
+						})
 						if (res.status === 0) {//登录成功		
 							//本地存储用户名
 							localStorage.setItem("user",JSON.stringify(res.data));
@@ -71,7 +78,7 @@ class StudentLogin extends React.Component {
 									)}
 								</FormItem>
 								<FormItem>
-									<Button type="primary" htmlType="submit" className="login-form-button">登录</Button>
+									<Button type="primary" htmlType="submit" className="login-form-button" loading={this.state.loading}>登录</Button>
 								</FormItem>
 							</Form>
 						</div>

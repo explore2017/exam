@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Card, Breadcrumb, Icon, message, Popconfirm, Badge, Button, Modal } from 'antd';
+import { Table, Card, Breadcrumb, Icon, Button, Modal,Tag } from 'antd';
 import * as URL from '@components/interfaceURL.js'
 
 import { get, post } from "@components/axios";
@@ -72,7 +72,17 @@ class Index extends React.Component {
 		});
 	}
 
+	handleSign(record){
+		const api = 'http://localhost:8000/exam/batch/' + record.batchId + '/sign';
+		post(api).then((res) => {
+			if (res.status == 0) {
+				this.initData();
+			}
+		});
+	}
+
 	render() {
+		
 		const columns = [{
 			title: '考试',
 			dataIndex: 'exam.name',
@@ -105,17 +115,21 @@ class Index extends React.Component {
 			dataIndex:'status',
 			key: 'status',
 			render: (text, record) => {
-				if(text==2){
+				if(text==0){
+					return (
+						<Button onClick={() => this.handleSign(record)}>签到</Button>
+					)
+				}else if(text==2){
 					return (
 						<Button onClick={() => this.handleStart(record)}>继续考试</Button>
 					)
-				}else if(text==1||text==0){
+				}else if(text==1){
 					return (
 						<Button onClick={() => this.handleStart(record)}>开始考试</Button>
 					)
 				}else if(text==3){
 					return(
-						<span>成绩</span>
+						<Tag color="cyan">已提交</Tag>
 					)
 				}else if(text==4){
 					return(
