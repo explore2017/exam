@@ -110,7 +110,7 @@
 
 #leftMenu .logo {
   display: block;
-  width: 130px;
+  width: 90px;
   margin: 50px auto;
 }
 
@@ -258,34 +258,21 @@
   left: 0;
   bottom: 0;
   right: 0;
-  background-image: url('../images/timg.jpg');
+  background-image: url('../images/login-back.svg');
+  /* background-image: url('../images/timg.jpg'); */
   background-size: cover;
-  min-height: 580px;
-  min-width: 800px
+  text-align:center;
 }
 
-.student_login .login-content{
-  width: 360px;
-  height: 580px;
-    margin: auto;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top:50%;
-  font-size: 12px;
-  transform: translateY(-50%);
-}
 .student_login .login-content-wrap {
-  position: absolute;
   width: 460px;
+  margin:auto;
   height: 100%;
   min-height: 580px;
-  left: 40%;
 }
 .student_login .logo {
   display: block;
   margin: 0 auto;
-  margin-top: 50px;
-  width:40%;
+  margin-top: 100px;
+  width:150px;
 }

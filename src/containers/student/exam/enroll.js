@@ -57,18 +57,18 @@ class Index extends React.Component {
 					title: '状态', key: 'state', render: (text, record) => {
 						if (record.isFull) {
 							return (
-								<span><Badge status="error" />disable</span>
+								<span><Badge status="error" /></span>
 							)
 						} else {
 							return (
-								<span><Badge status="success" />enable</span>
+								<span><Badge status="success" /></span>
 							)
 						}
 					}
 				},
 				{ title: '描述', dataIndex: 'describe', key: 'describe' },
 				{
-					title: 'Action',
+					title: '操作',
 					key: 'operation',
 					render: (text, record) => {
 						if (record.hasSelected) {

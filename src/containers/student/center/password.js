@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Form, Icon, Input, Button, Card,message,Modal } from 'antd';
+import { Row, Col, Form, Icon, Input, Button, Card,message,Modal,Breadcrumb } from 'antd';
 import * as URL from '@components/interfaceURL.js'
 
 const FormItem = Form.Item;
@@ -54,6 +54,17 @@ class Index extends React.Component {
 
 
     return (
+      <div>
+			<Breadcrumb>
+					<Breadcrumb.Item href="/">
+						<Icon type="home" />
+					</Breadcrumb.Item>
+					<Breadcrumb.Item href="">
+						<Icon type="user" />
+						<span>个人中心</span>
+					</Breadcrumb.Item>
+					<Breadcrumb.Item>修改密码</Breadcrumb.Item>
+				</Breadcrumb>
       <Card>
         <Form style={{marginTop:50,marginBottom:50}} onSubmit={this.submitChange.bind(this)}>
           <FormItem
@@ -93,6 +104,7 @@ class Index extends React.Component {
           </Row>
         </Form>
       </Card>
+      </div>
     )
   }
 }

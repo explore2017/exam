@@ -7,6 +7,7 @@ import MyInfo from './center/info'
 import Exam from './exam/enroll'
 import MyExam from './exam/me'
 import MyPassword from './center/password'
+import MyScore from './score/me'
 const SubMenu = Menu.SubMenu;
 
 class Student extends React.Component {
@@ -29,12 +30,12 @@ class Student extends React.Component {
 	render() {
 		return (
 			<div>
-				<div 
-				id="leftMenu"
+				<div
+					id="leftMenu"
 				>
-					<img 
-						className="logo" 
-						src={require("@assets/images/explore.jpg")} 
+					<img
+						className="logo"
+						src={require("@assets/images/explore.jpg")}
 					/>
 					<div>
 						<Menu
@@ -42,16 +43,28 @@ class Student extends React.Component {
 							defaultSelectedKeys={['class']}
 						>
 							<Menu.Item key="class">
-								<Icon type="pie-chart" />
-								<span><Link to="/student/class">我的班级</Link></span>
+								<Link to="/student/class">
+									<Icon type="pie-chart" />
+									<span>我的班级</span>
+								</Link>
 							</Menu.Item>
 							<Menu.Item key="enroll">
-								<Icon type="profile" />
-								<span><Link to="/student/exam/enroll">报名考试</Link></span>
+								<Link to="/student/exam/enroll">
+									<Icon type="profile" />
+									<span>报名考试</span>
+								</Link>
 							</Menu.Item>
 							<Menu.Item key="exam">
-								<Icon type="solution" />
-								<span><Link to="/student/exam/me">我的考试</Link></span>
+								<Link to="/student/exam/me">
+									<Icon type="solution" />
+									<span>我的考试</span>
+								</Link>
+							</Menu.Item>
+							<Menu.Item key="score">
+								<Link to="/student/score/me">
+									<Icon type="schedule" />
+									<span>我的成绩</span>
+								</Link>
 							</Menu.Item>
 							<SubMenu key="center" title={<span><Icon type="user" /><span>个人中心</span></span>}>
 								<Menu.Item key="info"><Link to="/student/center/info">个人信息</Link></Menu.Item>
@@ -66,6 +79,7 @@ class Student extends React.Component {
 						<Route path="/student/class" component={MyClass} />
 						<Route path="/student/exam/enroll" component={Exam} />
 						<Route path="/student/exam/me" component={MyExam} />
+						<Route path="/student/score/me" component={MyScore} />
 						<Route path="/student/center/info" component={MyInfo} />
 						<Route path="/student/center/password" component={MyPassword} />
 					</div>

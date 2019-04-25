@@ -43,7 +43,7 @@ class Index extends React.Component {
 			if(record.status==2){
 				this.openExam();
 			}else{
-				const api = 'http://localhost:8000/student/batch/' + record.batchId + '/check';
+				const api = 'http://localhost:8000/exam/batch/' + record.batchId + '/check';
 				get(api).then((res) => {
 					if (res.status == 0) {
 						this.setState({

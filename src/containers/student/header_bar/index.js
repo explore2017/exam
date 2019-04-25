@@ -12,7 +12,6 @@ class HeaderBar extends React.Component {
   }
 
   componentWillMount(){
-    console.log(localStorage.getItem("userName"))
       //如果状态管理中没有内容（用户刷新网页）
       //去取localStorage的用户名
 
@@ -32,7 +31,7 @@ class HeaderBar extends React.Component {
         mode="horizontal"
         onClick={this.handleClick.bind(this)}
       >
-        <SubMenu title={<span><Icon type="user" />{localStorage.getItem("userName")}</span>}>
+        <SubMenu title={<span><Icon type="user" />{JSON.parse(localStorage.getItem("user")).name}</span>}>
             <Menu.Item key="sign_out"><Link to="/student/login">退出</Link></Menu.Item>
             <Menu.Item key="change_password"><Link to="/student/personal_center/change_password">修改密码</Link></Menu.Item>
         </SubMenu>
