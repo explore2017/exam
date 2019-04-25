@@ -67,7 +67,7 @@ class Login extends React.Component {
 				<div className="login-content-wrap">
 						<div className="login-content">
 							{/* <img className="logo" src="/sxt_exam/lqw/images/logo.jpg"/> */}
-							<img className="logo" src={require("@assets/images/logo.jpg")}/>
+							<img className="logo" src={require("@assets/images/logo-login.svg")}/>
 							<div className="login-from">
 								<div className="login-tip">{this.state.loginTip}</div>
 								<Form onSubmit={this.handleSubmit.bind(this)} className="login-form">

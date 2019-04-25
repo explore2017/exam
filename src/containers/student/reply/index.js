@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Card, Radio, Tag, Input, Statistic, Row, Col, Button, Form, Spin, Icon, message,Modal } from 'antd'
+import { Card, Radio, Tag, Input, Statistic, Row, Col, Button, Form, Spin, Icon, message,Modal,Checkbox } from 'antd'
 import { get, post } from "@components/axios";
 const Countdown = Statistic.Countdown;
 const RadioGroup = Radio.Group;
@@ -85,7 +85,16 @@ class Index extends Component {
     for (let i in values) {
       let paperRecord = {};
       paperRecord.sequence = i;
-      paperRecord.reply = values[i];
+      //多选
+      if(values[i] instanceof Array){
+        let arr = values[i];
+        console.log(arr);
+        //加上字符串后数组自动转为,分割的字符串
+        console.log(arr+'')
+        paperRecord.reply=arr+'';
+      }else{
+        paperRecord.reply = values[i];
+      }
       arr.push(paperRecord);
     }
     return arr;
@@ -98,9 +107,9 @@ class Index extends Component {
           this.packageFormToObject(values).map((item)=>{
             let reply = (item.reply).trim();
             if(typeof reply == "undefined" || reply == null || reply == ""){
-              questions.push(<Button style={{marginRight:10}}>{item.sequence}</Button>)
+              questions.push(<Button key={item.sequence} style={{marginRight:10}}>{item.sequence}</Button>)
             }else{
-              questions.push(<Button style={{marginRight:10}} type='primary'>{item.sequence}</Button>)
+              questions.push(<Button key={item.sequence} style={{marginRight:10}} type='primary'>{item.sequence}</Button>)
             }
           })
       }
@@ -218,7 +227,7 @@ class Index extends Component {
             </div>
             <FormItem>
               {getFieldDecorator(String(record.sequence), {
-                initialValue: isEmpty(record.reply) ? '' : record.reply
+                initialValue: isEmpty(record.reply) ? '' : record.reply.split(',')
               })(
                 <Checkbox.Group  >
                   {multiple}
