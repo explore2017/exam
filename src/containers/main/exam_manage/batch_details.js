@@ -1,5 +1,5 @@
 import React from 'react'
-import {Row,Col,Select,Input,Table, Button,Modal,Tooltip,Breadcrumb} from 'antd'
+import {Row,Col,Select,Input,Table, Button,Modal,Tag,Breadcrumb} from 'antd'
 const Option = Select.Option;
 const Search = Input.Search;
 const confirm = Modal.confirm;
@@ -147,6 +147,34 @@ class BatchDetail  extends React.Component{
       title: '状态',
       dataIndex: 'batchStudent.status',
       key: 'status',
+      render: (text,record) =>{
+        if(text == 0){
+          return (
+            <Tag color="red">未签到</Tag>
+          )
+        } else if (text == 1) {
+          return (
+            <Tag color="green">已签到</Tag>
+          )
+        } else if (text == 2) {
+          return (
+            <Tag color="blue">正在考试</Tag>
+          )
+        }
+         else if (text == 3) {
+            return (
+              <Tag color="cyan">考试完成</Tag>
+            )
+          } else if (text == 4) {
+            return (
+              <Tag color="red">缺考</Tag>
+            )
+          } else if (text == 5) {
+            return (
+              <Tag color="blue">已阅卷</Tag>
+            )
+          }
+        }
     }, {
       title: '开始考试时间',
       dataIndex: 'batchStudent.startTime',
@@ -157,17 +185,27 @@ class BatchDetail  extends React.Component{
       key: 'endTime',
     },{
       title: '阅卷',
+      dataIndex: 'batchStudent.status',
       key: 'read',
-      render: (record) => (
+      render: (text,record) => {
+        let read=true
+        if(text==3||text==5){
+          read=false
+        }
+        return(
         <span>
-          {/* <Button size="small" >
+        <Button disabled={read} size="small" >
           <Link
-              to={`/main/exam_manage/exam_details/${this.props.match.params.examId}/${record.batch.id}`}
+              to={`/main/exam_manage/exam_details/${this.props.match.params.examId}/${this.props.match.params.batchId}/${record.batchStudent.id}`}
             >开始阅卷</Link>
-          </Button> */}
-        </span>
-      ),
+          </Button> 
+        </span>)
+      },
     }, {
+      title: '分数',
+      dataIndex: 'batchStudent.score',
+      key: 'score',
+    }, {  
       title: '操作',
       key: 'action',
       render: (text, record) => (
@@ -186,7 +224,7 @@ class BatchDetail  extends React.Component{
     let localeObj = {
       emptyText: '暂无数据'
     }
-
+   
   
     return(
       <div>

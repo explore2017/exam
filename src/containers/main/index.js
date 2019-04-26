@@ -50,7 +50,7 @@ import CreateExam from './exam_manage/create_exam.js';
 import QueryExam from './exam_manage/query_exam.js';
 import ExamDetails from './exam_manage/exam_details';
 import BatchDetails from './exam_manage/batch_details';
-import ShowPaper from './exam_manage/show_paper.js';
+import ReadPaper from './exam_manage/read_paper.js';
 
 //个人中心
 import ChangePassword from './personal_center/change_password';
@@ -268,6 +268,7 @@ class Main extends React.Component {
 							<Route path="/main/class_manage/query_class" component={QueryClass}/>
 
 							{/* 考试管理 */}
+							<Route path="/main/exam_manage/exam_details/:examId/:batchId/:batchStudentId" component={ReadPaper}/>					
 							<Route path="/main/exam_manage/create_exam" component={CreateExam}/>
 							<Route path="/main/exam_manage/exam_details/:examId/:batchId" component={BatchDetails}/>
 							<Route path="/main/exam_manage/exam_details/:examId" component={ExamDetails}/>
