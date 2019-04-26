@@ -1,5 +1,6 @@
 import React from 'react'
 import { Table, Card, Breadcrumb, Icon, Button, Modal,Tag } from 'antd';
+import { Link } from 'react-router-dom'
 import * as URL from '@components/interfaceURL.js'
 
 import { get, post } from "@components/axios";
@@ -103,15 +104,6 @@ class Index extends React.Component {
 			key: 'batch.endTime',
 		}, {
 			title: '状态',
-			dataIndex: 'status',
-			key: 'state',
-			render: (text, record) => {
-				return (
-					<span>{text}</span>
-				)
-			}
-		}, {
-			title: '状态',
 			dataIndex:'status',
 			key: 'status',
 			render: (text, record) => {
@@ -133,7 +125,11 @@ class Index extends React.Component {
 					)
 				}else if(text==4){
 					return(
-						<span style={{color:'orange'}}>缺考</span>
+						<Tag color="red">缺考</Tag>
+					)
+				}else if(text==5){
+					return(
+						<Link to='/student/score/me'><Tag color="cyan">已出成绩</Tag></Link>
 					)
 				}
 				

@@ -88,9 +88,7 @@ class Index extends Component {
       //多选
       if(values[i] instanceof Array){
         let arr = values[i];
-        console.log(arr);
         //加上字符串后数组自动转为,分割的字符串
-        console.log(arr+'')
         paperRecord.reply=arr+'';
       }else{
         paperRecord.reply = values[i];

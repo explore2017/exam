@@ -62,7 +62,7 @@ class Index extends React.Component {
 			key: 'score',
 			render: (text, record) => {
 					return (
-						<span>{text}</span>
+						<span>{text}分</span>
 					)
 			}
 		}];

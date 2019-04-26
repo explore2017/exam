@@ -1,6 +1,6 @@
 import React from 'react'
-import { Menu, Icon, Button } from 'antd';
-import { Route, Link, Switch } from 'react-router-dom';
+import { Menu, Icon } from 'antd';
+import { Route, Link } from 'react-router-dom';
 import HeaderBar from './header_bar/index.js';
 import MyClass from './class'
 import MyInfo from './center/info'
@@ -20,11 +20,11 @@ class Student extends React.Component {
 
 	componentWillMount() {
 		//判断用户是否已经登录
-		// if(!localStorage.getItem("userName")||!localStorage.getItem("role")=="student")
-		//  {
-		// 	this.props.history.push('/student/login');//跳转至登录页
-		// }
-		// this.setState({roleSet : localStorage.getItem("roleSet")})
+		if (!localStorage.getItem("userName") || !localStorage.getItem("role") == "student"||localStorage.getItem("user")==null) {
+			//跳转至登录页
+			this.props.history.push('/student/login');
+		}
+		this.setState({ roleSet: localStorage.getItem("roleSet") })
 	}
 
 	render() {

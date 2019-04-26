@@ -66,7 +66,7 @@ class Index extends React.Component {
 						}
 					}
 				},
-				{ title: '描述', dataIndex: 'describe', key: 'describe' },
+				//{ title: '描述', dataIndex: 'describe', key: 'describe' },
 				{
 					title: '操作',
 					key: 'operation',
