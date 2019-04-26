@@ -181,7 +181,7 @@ class BatchDetail  extends React.Component{
       key: 'startTime',
     }, {
       title: '交卷时间',
-      dataIndex: 'batchStudent.endTime',
+      dataIndex: 'batchStudent.submitTime',
       key: 'endTime',
     },{
       title: '阅卷',

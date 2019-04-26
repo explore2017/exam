@@ -135,7 +135,8 @@ class ReadPaper extends Component {
             {...formItemLayoutTop}
              label="得分">
                 {getFieldDecorator(String(record.sequence), {
-                  initialValue: isEmpty(record.score) ? '' : record.score
+                   rules: [{ required: true, message: '得分不能为空！'}],
+                  initialValue: isEmpty(record.score) ? 0 : record.score
                 })(<InputNumber  precision={1} min={0} max={record.singleScore}   style={{width:"5%"}}>
                 </InputNumber> )}
              </FormItem>         
@@ -169,7 +170,8 @@ class ReadPaper extends Component {
             {...formItemLayoutTop}
              label="得分">
                 {getFieldDecorator(String(record.sequence), {
-                  initialValue: isEmpty(record.score) ? '' : record.score
+                  rules: [{ required: true, message: '得分不能为空！'}],
+                  initialValue: isEmpty(record.score) ? 0 : record.score
                 })(<InputNumber  precision={1} min={0} max={record.singleScore}   style={{width:"5%"}}>
                 </InputNumber> )}
              </FormItem>           
@@ -208,7 +210,8 @@ class ReadPaper extends Component {
             {...formItemLayoutTop}
              label="得分">
                 {getFieldDecorator(String(record.sequence), {
-                  initialValue: isEmpty(record.score) ? '' : record.score
+                   rules: [{ required: true, message: '得分不能为空！'}],
+                  initialValue: isEmpty(record.score) ? 0 : record.score
                 })(<InputNumber  precision={1} min={0} max={record.singleScore}   style={{width:"5%"}}>
                 </InputNumber> )}
              </FormItem>          
@@ -230,7 +233,8 @@ class ReadPaper extends Component {
             {...formItemLayoutTop}
              label="得分">
                 {getFieldDecorator(String(record.sequence), {
-                  initialValue: isEmpty(record.score) ? '' : record.score
+                   rules: [{ required: true, message: '得分不能为空！'}],
+                  initialValue: isEmpty(record.score) ? 0 : record.score
                 })(<InputNumber  precision={1} min={0} max={record.singleScore}   style={{width:"5%"}}>
                 </InputNumber> )}
              </FormItem>            
@@ -251,7 +255,8 @@ class ReadPaper extends Component {
             {...formItemLayoutTop}
              label="得分">
                 {getFieldDecorator(String(record.sequence), {
-                  initialValue: isEmpty(record.score) ? '' : record.score
+                   rules: [{ required: true, message: '得分不能为空！'}],
+                  initialValue: isEmpty(record.score) ? 0: record.score
                 })(<InputNumber  precision={1} min={0} max={record.singleScore}   style={{width:"5%"}}>
                 </InputNumber> )}
              </FormItem>        

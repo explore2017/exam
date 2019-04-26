@@ -158,6 +158,7 @@ addClass(){
      }   
     //TODO : 第一次点击this.state.curSelectTeacher为空
     this.setState({curSelectStudent : record,classes:classes})
+    console.log(record)
     const {form}=this.props;
     //重新设置修改模态框中三个选项的值
     form.setFieldsValue({'name': record.name});
@@ -171,7 +172,7 @@ addClass(){
 
   //确认修改
   changeOk(){
-    this.setState({visibleChangeModal:false})
+
 
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -192,6 +193,7 @@ addClass(){
          classes:classes,   
         }).then((res)=>{
           if(res.status==0){
+            this.setState({visibleChangeModal:false})
             this.getPageDate();
           }
         })     
