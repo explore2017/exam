@@ -38,7 +38,7 @@ class StudentLogin extends React.Component {
 							localStorage.setItem("userName", values.sno);
 							localStorage.setItem("role", "student");
 							//跳转主页
-							this.props.history.push('/student');//react-router 4.0 写法
+							this.props.history.push('/student/class');//react-router 4.0 写法
 						}
 						else if (res.status === 1) {//登录失败
 							this.setState({ loginTip: "学号或密码错误" })

@@ -66,9 +66,6 @@ addBatch(e){
         });
         return;
       }  
-      let batch={
-       
-      }
       post(URL.add_exam_batch,{ 
         examId:this.props.match.params.examId,
         maxNumber:values.maxNumber,
@@ -127,7 +124,7 @@ addBatch(e){
     };
 
     const columns = [{
-      title: '姓名',
+      title: '名称',
       dataIndex: 'batch.name',
     },{
       title: '批次人数',

@@ -12,14 +12,19 @@ class Index extends React.Component {
 			classNo: undefined,
 			list: []
 		}
+		this.getDate=this.getDate.bind(this);
 	}
 
-	componentDidMount() {
-		post(URL.my_class, {}).then((res) => {
+	getDate(){
+		post(URL.my_class).then((res) => {
 			this.setState({
 				list: res.data
 			})
 		});
+	}
+
+	componentDidMount() {
+		this.getDate();
 	}
 
 	// 学生加入班级
@@ -28,13 +33,20 @@ class Index extends React.Component {
 				message.warning("请输入班级号");
 				return;
 		}
-		post(URL.add_class_student,
-			{ classNo: this.state.classNo });
+		post(URL.join_class_student+"?classNo="+this.state.classNo)
+		.then((res)=>{
+			if(res.status==0){
+				this.getDate();
+			}
+		})
 	}
 
 	handleExitClass(e) {
-		DELETE(URL.delete_class_student,
-			{ classNo: e.classNo });
+		DELETE(URL.exit_class,1).then((res)=>{
+				if(res.status==0){
+					this.getDate();
+				}
+			});
 	}
 	
 	render() {
@@ -42,6 +54,10 @@ class Index extends React.Component {
 			title: '班级',
 			dataIndex: 'name',
 			key: 'name',
+		},{
+			title: '班级号',
+			dataIndex: 'classNo',
+			key: 'classNo',
 		}, {
 			title: '老师',
 			dataIndex: 'teacherName',
@@ -69,7 +85,7 @@ class Index extends React.Component {
 		return [
 			<div>
 				<Breadcrumb>
-					<Breadcrumb.Item href="/">
+					<Breadcrumb.Item>
 						<Icon type="home" />
 					</Breadcrumb.Item>
 					<Breadcrumb.Item href="">

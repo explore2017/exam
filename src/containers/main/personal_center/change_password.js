@@ -3,9 +3,8 @@ import React from 'react'
 import { Form,Input,Select,Row,Col,Button,Modal } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
-
 import BreadcrumbCustom from '@components/BreadcrumbCustom'
-import httpServer from '@components/httpServer.js'
+import {put} from '@components/axios.js'
 import * as URL from '@components/interfaceURL.js'
 
 class ChangePassword extends React.Component {
@@ -13,18 +12,16 @@ class ChangePassword extends React.Component {
     super()
     this.state = {
       pathList : ['个人中心','修改密码'],//面包屑路径
+      role:0,
     }
   }
 
-  //选择班级
-  handleChange(value) {
-    console.log(`selected ${value}`);
-  }
 
   submitChange(e){
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        const role=this.state.role;
         if(values.password1 !== values.password2) {
           Modal.warning({
             title : '两次输入的密码不一致',
@@ -32,17 +29,29 @@ class ChangePassword extends React.Component {
           })
           return;
         }
-        httpServer({
-          url : URL.change_password
-        },{
-          className : 'UpdateUserPwdServiceImpl',
-          type : 1,
-          password : values.password1,
-          oldPassword : values.oldPassword
-        })
+        if(role==1){
+          put(URL.manage_password,{
+            newPassword : values.password1,
+            oldPassword : values.oldPassword,
+          })
+        }else{
+          put(URL.teacher_password,{
+            newPassword : values.password1,
+            oldPassword : values.oldPassword,
+          })
+        }     
       }
     });
   }
+ 
+  componentWillMount(){
+      if(localStorage.getItem('role')=='1'){
+        this.setState({
+         role:1, 
+        })
+      }
+  }
+
 
   render(){
     const { getFieldDecorator } = this.props.form;
@@ -71,7 +80,7 @@ class ChangePassword extends React.Component {
               {getFieldDecorator('oldPassword',{
                 rules: [{ required: true, message: '请输入原密码！' }],
               })(
-                <Input />
+                <Input.Password />
               )}
             </FormItem>
             <FormItem
@@ -81,7 +90,7 @@ class ChangePassword extends React.Component {
               {getFieldDecorator('password1',{
                 rules: [{ required: true, message: '请输入新密码！' }],
               })(
-                <Input />
+                <Input.Password />
               )}
             </FormItem>
             <FormItem
@@ -91,7 +100,7 @@ class ChangePassword extends React.Component {
               {getFieldDecorator('password2',{
                 rules: [{ required: true, message: '请输入确认密码！' }],
               })(
-                <Input />
+                <Input.Password />
               )}
             </FormItem>
             <Row>

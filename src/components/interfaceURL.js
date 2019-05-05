@@ -101,8 +101,10 @@ export const add_subject = "/subject/addSubject";
 export const delete_subject = "/subject/";
 
 export const student_login="/student/login";
+//老师登录
+export const  teacher_login = "/teacher/login";
 //管理员登录
-export const  login = "/student/login";
+export const  manage_login = "/manage/login";
 
 //得到班级信息
 export const get_class_info = "/class/allclass";
@@ -163,12 +165,16 @@ export const search_class = "data/search_class.json";
 export const delete_class = "class/deleteclass/";
 //删除班级学生
 export const delete_class_student = "class/deletestudent/";
+//退出班级
+export const exit_class = "student/class/";
 //修改班级
 export const change_class = "class/reviseclass";
 //添加班级
 export const add_class = "class/addclass";
 //添加班级
 export const add_class_student = "class/addstudent";
+//加入班级
+export const join_class_student = "student/class";
 // 获取个人所属班级
 export const my_class = "student/myClass";
 
@@ -230,7 +236,10 @@ export const submit_score = "data/submit_score.json";
 export const search_papers = "data/search_papers.json";
 
 //修改密码
-export const change_password = "data/change_password.json";
+export const teacher_password = "teacher/password";
+
+//修改密码
+export const manage_password = "manage/password";
 
 //自动阅卷
 export const auto_read = "data/auto_read.json";

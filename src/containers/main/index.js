@@ -67,7 +67,7 @@ class Main extends React.Component {
 			defaultSelectedKeys : [],//菜单默认选择项
 			openKeys: [],//菜单打开项
 			subjectArr:[],//科目数组
-			roleSet : '1',
+			roleSet :0,
 		}
 		this.rootSubmenuKeys = ['q_checkin', 'student_manage','teacher_manage','exam_manage','personal_center','class_manage'];
 	}
@@ -129,11 +129,11 @@ class Main extends React.Component {
 
 	componentWillMount(){
 		//判断用户是否已经登录
-		if(!localStorage.getItem("userName")||!(localStorage.getItem("role")=="teacher"||localStorage.getItem("role")=="manage")) {
+		if(!localStorage.getItem("userName")||!(localStorage.getItem("role")==0||localStorage.getItem("role")==1)) {
 			this.props.history.push('/login');//跳转至登录页
 		}
 
-		// this.setState({roleSet : localStorage.getItem("role")})
+		this.setState({roleSet : localStorage.getItem("role")})
 
 		//获取科目信息
 		get(URL.get_subject)	
@@ -175,10 +175,6 @@ class Main extends React.Component {
   }
 
 	render(){
-		
-		
-
-
 		return(
 			<div>
 				<div id="leftMenu">
@@ -204,12 +200,12 @@ class Main extends React.Component {
 			            <span>生成试卷</span>
 								</Link>
 		          </Menu.Item>
-		          <Menu.Item key="score_search">
+		          {/* <Menu.Item key="score_search">
 								<Link to="/main/score_search">
 			            <Icon type="search" />
 			            <span>成绩查询</span>
 								</Link>
-		          </Menu.Item>
+		          </Menu.Item> */}
 							<Menu.Item key="subject_manage">
 								<Link to="/main/subject">
 			            <Icon type="read" />
@@ -252,7 +248,7 @@ class Main extends React.Component {
 							<Route path="/main/q_checkin" component={QCheckin}/>
 							<Route path="/main/add_paper/choose_question/:paperId/:subjectId/:totalScore" component={ChooseQuestions}/>
 							<Route path="/main/add_paper" component={Paper}/>
-							<Route path="/main/score_search" component={ScoreSearch}/>
+							{/* <Route path="/main/score_search" component={ScoreSearch}/> */}
 
 							{/* 学生管理 */}
 							<Route path="/main/student_manage/add_student" component={AddStudent}/>
@@ -263,8 +259,8 @@ class Main extends React.Component {
 							<Route path="/main/teacher_manage/query_teacher" component={QueryTeacher}/>
 
 							{/* 班级管理 */}
+							<Route path="/main/class_manage/query_class/detail/:classId" component={ClassDetail}/>
 							<Route path="/main/class_manage/add_class" component={AddClass}/>
-							<Route path="/main/class_manage/query_class/detail/:classId/:className/:teacherName" component={ClassDetail}/>
 							<Route path="/main/class_manage/query_class" component={QueryClass}/>
 
 							{/* 考试管理 */}

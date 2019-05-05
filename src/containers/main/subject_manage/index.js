@@ -32,6 +32,7 @@ class QuerySubject extends React.Component {
         name:'',
       },
       subjectName:'',
+      role:0,
     }
     this.handleInputChange=this.handleInputChange.bind(this);
     this.addSubject=this.addSubject.bind(this);  //增加班级
@@ -50,7 +51,7 @@ class QuerySubject extends React.Component {
           data:res.data,     
         })
         this.props.subjectinfoActions.setSubjectInfo({
-          subjectArr: this.state.subjectArr
+          subjectArr: res.data
         })
       }    
     })
@@ -107,6 +108,9 @@ addSubject(){
 
   componentWillMount(){
     this.getSubjectDate();
+    this.setState({
+      role:localStorage.getItem("role")?localStorage.getItem("role"):0
+    })
   }
 
   //删除
@@ -229,13 +233,18 @@ addSubject(){
     },{
       title: '操作',
       key: 'action',
-      render: (text, record) => (
+      render: (text, record) => {
+        let role=true;
+        if(this.state.role==1){
+          role=false;
+        }
+        return(
         <span>
-          <Button type="danger" size="small" onClick={this.deleteSubject.bind(this,record)}>删除</Button>
+          <Button disabled={role} type="danger" size="small" onClick={this.deleteSubject.bind(this,record)}>删除</Button>
           <Divider type="vertical" />
-          <Button size="small" onClick={this.changeSubject.bind(this,record)}>修改</Button>
+          <Button  disabled={role} size="small" onClick={this.changeSubject.bind(this,record)}>修改</Button>
         </span>
-      ),
+      )},
     }];
 
     //行选择
@@ -276,8 +285,14 @@ addSubject(){
                 <Option value={1}>科目名称</Option>
               </Select>
               <Button type="primary" className="f-l" onClick={this.showAllSubject.bind(this)}>所有科目</Button>
-              <Button  className="f-l m-l-60" onClick={this.addSubject}  >添加科目</Button>
-              <Input placeholder="请输入科目名称"  style={{ width: '20%' }} onChange={this.handleInputChange} value={this.state.subjectName} ></Input>  
+              {
+               this.state.role==1?
+              <Button  className="f-l m-l-60" onClick={this.addSubject}  >添加科目</Button>:''
+              }  
+              {
+               this.state.role==1?
+              <Input placeholder="请输入科目名称"  style={{ width: '20%' }} onChange={this.handleInputChange} value={this.state.subjectName} ></Input>:''
+              }  
             </Col>
           </Row>
           <div className="m-t-20">

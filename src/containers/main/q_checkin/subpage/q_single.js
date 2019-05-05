@@ -57,6 +57,10 @@ class QSingle extends React.Component {
           keyPoint:values.knowledgePoint,
           defaultScore:values.defaultScore,
           title:'单选题',
+        }).then((res)=>{
+          if(res.status==0){
+            this.props.form.resetFields()
+          }         
         }); 
       
 
@@ -229,11 +233,7 @@ class QSingle extends React.Component {
             {getFieldDecorator('tigan', {
               rules: [{ required: true, message: '题干不能为空！' }],
             })(
-              <Row>
-                <Col span={24}>
                   <TextArea rows={4} />
-                </Col>
-              </Row>
             )}
 
             

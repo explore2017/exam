@@ -18,6 +18,7 @@ class AddTeacher extends React.Component {
       managerId : 0,
       subjectArr:this.props.subjectinfo.subjectArr||[],
       teacher:[],
+      role:0,
     }
   }
 
@@ -30,27 +31,40 @@ class AddTeacher extends React.Component {
     .then((res)=>{
       if(res.status==0){
         this.setState({
-          teacher:res.data,     
+          teacher:res.data,
+          role:1,  
         })
       }    
     })
   }
   componentWillMount(){
-        this.getTacherDate();
+    if(localStorage.getItem("role")==1){
+      this.getTacherDate();
+    }
   }
 
 
 
   //提交
   handleSubmit(e) {
+
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      if (!err) {     
+      if (!err) {   
+      
+      let teacherId='';
+        if(this.state.role=='1'){
+          teacherId=values.teacher;
+        }else{
+          teacherId=this.props.userinfo.id
+        }  
+
         post(URL.add_class,{
           name:values.name, 
           subjectId:values.subject,
-          teacherId:values.teacher,
+          teacherId:teacherId,
         }).then(()=>{
+          this.props.form.resetFields();
           get(URL.get_class_info)
           .then((res)=>{
             //状态存储
@@ -127,6 +141,7 @@ class AddTeacher extends React.Component {
                 </Select>
               )}      
             </FormItem>
+            {this.state.role=='1'?
             <FormItem
             {...formItemLayout}
               label="老师"
@@ -138,7 +153,7 @@ class AddTeacher extends React.Component {
                    {teacher}
                 </Select>
               )}      
-            </FormItem>
+            </FormItem>:''}
                    
             <Row>
               <Col span={12} offset={4}>           
@@ -154,13 +169,13 @@ class AddTeacher extends React.Component {
 function mapStateToProps(state) {
   return {
       subjectinfo: state.subjectinfo,
-      userinfo:state.userinfo
+      userinfo:state.userinfo,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-      classinfoActions: bindActionCreators(classinfoActions, dispatch),
+      classinfoActions: bindActionCreators(classinfoActions, dispatch),      
   }
 }
 

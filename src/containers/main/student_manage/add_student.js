@@ -42,6 +42,10 @@ class AddTeacher extends React.Component {
           password:values.password,      
           name:values.name,
           classes:classId
+        }).then((res)=>{
+          if(res.status==0){
+            this.props.form.resetFields();
+          }
         })
       }
     });

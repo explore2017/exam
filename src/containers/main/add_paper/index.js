@@ -70,6 +70,7 @@ class Paper extends React.Component {
     get(URL.get_papers).then((res)=>{
       if(res.status==0){
           this.setState({data:res.data});
+          this.props.form.resetFields();
       }
     })   
   }

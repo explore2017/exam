@@ -217,7 +217,7 @@ addStudent(){
               <Button type="primary" className="f-l" onClick={this.showAllStudent.bind(this)}>所有学生</Button>
               <Button  className="f-l m-l-60" onClick={this.addStudent}    >添加学生</Button>
               <Input placeholder="请输入学号"  style={{ width: '20%' }} onChange={this.handleInputChange} value={this.state.sno} ></Input>        
-              <span style={{marginLeft:200}} >班级名称: {this.props.match.params.className}  老师:{this.props.match.params.teacherName}</span>
+      
             </Col>
           </Row>
           <div className="m-t-20">
@@ -236,12 +236,6 @@ addStudent(){
   }
 }
 
-function mapStateToProps(state) {
-    return {
-      
-    }
-}
 
-export default connect(
-    mapStateToProps
-)(ClassDetail)
+
+export default ClassDetail

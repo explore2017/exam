@@ -19,13 +19,15 @@ class HeaderBar extends React.Component {
   }
 
   componentWillMount(){
+    console.log(this.props.userinfo)
       //如果状态管理中没有内容（用户刷新网页）
       //去取localStorage的用户名
-      if(!this.props.userinfo.userName) {
+      if(!this.props.userinfo.userName) {     
         if(localStorage.getItem("userName")) {
           //发送Action  向Store 写入用户名
           this.props.userinfoActions.login({
-            userName: localStorage.getItem("userName")
+            userName: localStorage.getItem("userName"),
+            id: localStorage.getItem("id")
           })
         }
       }

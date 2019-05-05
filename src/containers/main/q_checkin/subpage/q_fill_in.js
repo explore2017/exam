@@ -31,6 +31,10 @@ class QFillIn extends React.Component {
           keyPoint:values.knowledgePoint,
           defaultScore:values.defaultScore,
           title:'填空题',
+        }).then((res)=>{
+          if(res.status==0){
+            this.props.form.resetFields()
+          }         
         });
       }
     });
@@ -119,12 +123,8 @@ class QFillIn extends React.Component {
           >
             {getFieldDecorator('tigan',{
               rules: [{ required: true, message: '题干不能为空！'}],
-            })(
-              <Row>
-                <Col span={24}>
-                  <TextArea rows={4} />
-                </Col>
-              </Row>
+            })(            
+                  <TextArea rows={4} />              
             )}
           </FormItem>
           <FormItem

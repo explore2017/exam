@@ -34,7 +34,6 @@
 .ta-c {
   text-align: center;
 }
-
 /* 登录界面 */
 
 .login {
@@ -73,10 +72,44 @@
   transform: translateY(-50%);
 }
 
+/* 登录界面 */
+
+/* .login {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-image: url('../images/login-bg-small.jpg');
+  background-size: cover;
+  text-align:center;
+}
+
+.login .login-content-wrap {
+  width: 460px;
+  margin:auto;
+  height: 100%;
+  min-height: 580px;
+}
+
+.login .login-content {
+  width: 360px;
+  height: 580px;
+  margin: auto;
+  background: rgba(255, 255, 255, 1);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  font-size: 12px;
+  transform: translateY(-50%);
+} */
+
 .login .logo {
   display: block;
   margin: 0 auto;
-  margin-top: 50px
+  margin-top: 20px;
+  width:150px;
 }
 
 .login-form-button {

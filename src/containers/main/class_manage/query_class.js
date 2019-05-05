@@ -55,8 +55,13 @@ class QueryClass extends React.Component {
           initialData:res.data,
           data:res.data,     
         });
+        let classes=[];
+        res.data.map((item)=>{
+          classes.push(item.class);
+        })
+        //状态存储
         this.props.classinfoActions.setClassInfo({
-          classArr: res.data.class
+          classArr: classes
         })
       }    
     })
@@ -231,7 +236,7 @@ class QueryClass extends React.Component {
         <span>
           <Button size="small">
           <Link
-              to={`/main/class_manage/query_class/detail/${record.class.id}/${record.class.name}/${record.teacherName}`}
+              to={`/main/class_manage/query_class/detail/${record.class.id}`}
             >查看班级详情</Link>
           </Button>
         </span>

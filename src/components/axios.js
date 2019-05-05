@@ -2,6 +2,8 @@
 import axios from "axios";
 import qs from "qs";
 import {Modal,message} from 'antd'
+import { withRouter  } from 'react-router-dom'
+import history from '../history.js';
 
 axios.defaults.withCredentials=true;
 
@@ -19,10 +21,11 @@ axios.interceptors.request.use(config => {
 // 添加响应拦截器
 axios.interceptors.response.use(
   function(response) {
- 
+  
     return response;
   },
   function(error) {
+    console.log(error);
     // 对响应错误做点什么
     return Promise.reject(error);
   }
@@ -31,6 +34,17 @@ axios.interceptors.response.use(
 function successState(res) {
     //这里可以隐藏loading
     //统一判断后端返回的错误码
+    if(res.status==403){
+      Modal.error({
+        title: '出错了',
+        content: '你没有权限访问，请登录',
+        okText : '确定',
+        onOk:()=>{
+          history.push("/login");   
+        }       
+      });
+      return;
+    }
     if(res.data.status == "0"){
       if(res.data.msg) {
         message.success(res.data.msg);
@@ -56,8 +70,13 @@ function successState(res) {
   }
   
   function errorState(response) {
+  
     //这里可以隐藏loading
     console.log(response)
+    if (response.status === 403) {
+      return;
+        // 如果不需要除了data之外的数据，可以直接 return response.data
+    }
     // 如果http状态码正常，则直接返回数据
     if (response && (response.status === 200 || response.status === 304 || response.status === 400)) {
       return response
@@ -71,7 +90,7 @@ function successState(res) {
   
   }
 
- export function get(url,params){
+   export function get(url,params){
     let promise = new Promise(function(resolve, reject) {
         axios.get(url,{params:params}).then((res) => {
           successState(res)

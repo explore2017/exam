@@ -53,6 +53,7 @@ class CreateExam extends React.Component {
     this.randomPaper=this.randomPaper.bind(this);
     this.addBatch=this.addBatch.bind(this);
     this.deleteBatch=this.deleteBatch.bind(this);
+    this.handleCloseDesgin=this.handleCloseDesgin.bind(this);
   }
 
   //选择班级
@@ -101,6 +102,10 @@ class CreateExam extends React.Component {
           name : values.examName,
           startTime:values.signStartTime.format('YYYY-MM-DD HH:mm'),
           endTime:values.signEndTime.format('YYYY-MM-DD HH:mm'),
+        }).then((res)=>{
+          if(res.status==0){
+            this.props.form.resetFields();
+          }
         })
       }
     });
@@ -172,7 +177,7 @@ class CreateExam extends React.Component {
         }
       })
       }
-      this.setState({ visibleDesginModal:false});
+      this.handleCloseDesgin();
     });
   }
 
@@ -202,6 +207,22 @@ class CreateExam extends React.Component {
     })
     
   }
+
+handleCloseDesgin(){
+  this.setState({ visibleDesginModal:false,singeNumber:0,
+    judgeNumber:0,
+    multipleNumber:0,
+    shortNumber:0,
+    completionNumber:0,
+    analysisNumber:0,       
+    difficulty:0,
+    singescore:0,
+    judgescore:0,
+    multiplescore:0,
+    shortscore:0,
+    completionscore:0,
+    analysisscore:0,});
+}
 
 deleteBatch(index){
    let  oldBatches=[...this.state.batches];
@@ -244,6 +265,7 @@ deleteBatch(index){
       key: 'name',
     },{
       title: '试卷描述',
+      width:650,
       dataIndex: 'describe',
       key: 'describe',
     }, {
@@ -257,7 +279,7 @@ deleteBatch(index){
               visiblePaperModal:true,
             })
           }}>预览试卷</Button>        
-          <Button style={{marginLeft:20}} type="primary" onClick={this.confirmPaper.bind(this,record)} >选择</Button>
+          <Button style={{marginLeft:5}} type="primary" onClick={this.confirmPaper.bind(this,record)} >选择</Button>
         </span>
       ),
     }];
@@ -324,8 +346,9 @@ deleteBatch(index){
               {...formItemLayout}
               label="设计试卷"
             >  
-             <Input value={this.state.paperId} disabled={true} style={{ width: 430}} placeholder="请设计试卷"></Input> 
-             <Button type="primary" style={{marginTop:0,marginLeft:20}} onClick={()=>{this.setState({visibleDesginModal:true})}} >设计试卷</Button>
+             <Input value={this.state.paperId} disabled={true} style={{ width: 300}} placeholder="请设计试卷"></Input> 
+             <Button type="primary" style={{marginTop:0,marginLeft:10}} onClick={()=>{this.setState({visibleDesginModal:true})}} >设计试卷</Button>
+             <Button style={{marginTop:0,marginLeft:10}} onClick={()=>{if(this.state.paperId==''||this.state.paperId==undefined||this.state.paperId==null){return;} this.setState({visiblePaperModal:true,showId:this.state.paperId})}} >预览试卷</Button>
               </FormItem> }
               <FormItem
               {...formItemLayout}
@@ -417,7 +440,7 @@ deleteBatch(index){
         title="设计试卷"
         width={1000}
          visible={this.state.visibleDesginModal}
-         onCancel={()=>{this.setState({visibleDesginModal:false})}}
+         onCancel={this.handleCloseDesgin}
          destroyOnClose={true}
          onOk={this.randomPaper}
          cancelText="取消"  
@@ -501,7 +524,7 @@ deleteBatch(index){
             <Input onChange={(e)=>this.setState({analysisKeyPoint:e.target.value})} style={{width:150,marginLeft:0}}></Input>
             </FormItem>      
 </Form>
-            
+           <span>提示：多个知识点请用逗号隔开</span> 
         </Modal>    
         <Modal
         title="添加批次"

@@ -56,7 +56,7 @@ class Index extends React.Component {
     return (
       <div>
 			<Breadcrumb>
-					<Breadcrumb.Item href="/">
+					<Breadcrumb.Item >
 						<Icon type="home" />
 					</Breadcrumb.Item>
 					<Breadcrumb.Item href="">
