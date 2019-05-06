@@ -105,6 +105,7 @@ class CreateExam extends React.Component {
         }).then((res)=>{
           if(res.status==0){
             this.props.form.resetFields();
+            this.setState({batches:[]});
           }
         })
       }
@@ -183,7 +184,7 @@ class CreateExam extends React.Component {
 
   addBatch(e){
     e.preventDefault();
-    this.props.form.validateFields(['maxNumber', 'startTime','endTime'],(err, values) => {
+    this.props.form.validateFields(['maxNumber', 'startTime','endTime','signEndTime', 'signStartTime'],(err, values) => {
           if(!err){
             if(values.endTime<values.startTime){
               Modal.error({
@@ -191,7 +192,15 @@ class CreateExam extends React.Component {
                 content: '考试开始时间应比考试结束时间早',
               });
               return;
+            } 
+            if(values.signStartTime>values.startTime){
+              Modal.error({
+                title: '出错了',
+                content: '考试开始时间应比考试报名时间晚',
+              });
+              return;
             }  
+             
             let batch={
               maxNumber:values.maxNumber,
               startTime:values.startTime.format('YYYY-MM-DD HH:mm'),
