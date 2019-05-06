@@ -73,6 +73,7 @@ class Login extends React.Component {
 		current: e.key,
 		role:role,
 	});
+	this.props.form.resetFields();
 }
 
 

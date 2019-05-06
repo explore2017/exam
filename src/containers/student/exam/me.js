@@ -109,15 +109,15 @@ class Index extends React.Component {
 			render: (text, record) => {
 				if(text==0){
 					return (
-						<Button onClick={() => this.handleSign(record)}>签到</Button>
+						<Button size="small" onClick={() => this.handleSign(record)}>签到</Button>
 					)
 				}else if(text==2){
 					return (
-						<Button onClick={() => this.handleStart(record)}>继续考试</Button>
+						<Button size="small" onClick={() => this.handleStart(record)}>继续考试</Button>
 					)
 				}else if(text==1){
 					return (
-						<Button onClick={() => this.handleStart(record)}>开始考试</Button>
+						<Button size="small" onClick={() => this.handleStart(record)}>开始考试</Button>
 					)
 				}else if(text==3){
 					return(
