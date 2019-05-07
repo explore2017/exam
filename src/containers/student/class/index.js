@@ -42,7 +42,7 @@ class Index extends React.Component {
 	}
 
 	handleExitClass(e) {
-		DELETE(URL.exit_class,1).then((res)=>{
+		DELETE(URL.exit_class,e.id).then((res)=>{
 				if(res.status==0){
 					this.getDate();
 				}
@@ -52,21 +52,17 @@ class Index extends React.Component {
 	render() {
 		const columns = [{
 			title: '班级',
-			dataIndex: 'class.name',
+			dataIndex: 'name',
 			key: 'name',
 		},{
 			title: '班级号',
-			dataIndex: 'class.classNo',
+			dataIndex: 'classNo',
 			key: 'classNo',
 		}, {
 			title: '老师',
 			dataIndex: 'teacherName',
 			key: 'teacherName',
-		}, {
-			title: '科目',
-			dataIndex: 'subject.name',
-			key: 'subject',
-		}, {
+		},  {
 			title: '操作',
 			key: 'action',
 			render: (text, record) => (
