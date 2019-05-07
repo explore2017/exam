@@ -105,7 +105,7 @@ class Index extends Component {
           this.packageFormToObject(values).map((item)=>{
             let reply = (item.reply).trim();
             if(typeof reply == "undefined" || reply == null || reply == ""){
-              questions.push(<Button key={item.sequence} style={{marginRight:10}}>{item.sequence}</Button>)
+              questions.push(<Button key={item.sequence} style={{marginRight:10}}>{item.sequence+1}</Button>)
             }else{
               questions.push(<Button key={item.sequence} style={{marginRight:10}} type='primary'>{item.sequence}</Button>)
             }
