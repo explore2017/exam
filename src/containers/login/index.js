@@ -95,7 +95,7 @@ class Login extends React.Component {
 				<Icon type="android" />管理员登陆
         </Menu.Item>
 				</Menu>
-							{this.state.role==0?<img className="logo" src={require("@assets/images/logo-login.svg")}/>
+							{this.state.role==0?<img className="logo" src={require("@assets/images/pencil.svg")}/>
 							: ''		}
 										{this.state.role==1?<img className="logo" src={require("@assets/images/manage.png")}/>
 							: ''		}

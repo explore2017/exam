@@ -179,7 +179,7 @@ class Main extends React.Component {
 			<div>
 				<div id="leftMenu">
 					{/* <img className="logo" src="/sxt_exam/lqw/images/logo.jpg"/> */}
-					<img className="logo" src={require("@assets/images/logo.jpg")}/>
+					<img className="logo" src={require("@assets/images/pencil.svg")}/>
 					<div>
 		        <Menu
 		          mode="inline"

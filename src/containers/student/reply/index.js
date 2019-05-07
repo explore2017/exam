@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Card, Radio, Tag, Input, Statistic, Row, Col, Button, Form, Spin, Icon, message,Modal,Checkbox } from 'antd'
+import { Card, Radio, Tag, Input, Statistic, Row, Col, Button, Form, Spin, Icon, message, Modal, Checkbox } from 'antd'
 import { get, post } from "@components/axios";
 const Countdown = Statistic.Countdown;
 const RadioGroup = Radio.Group;
@@ -15,7 +15,7 @@ class Index extends Component {
       batchId: undefined,
       loading: true,
       finished: false,
-      visible:false
+      visible: false
     }
   }
 
@@ -55,12 +55,13 @@ class Index extends Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
+
   }
 
   handleSubmit(e) {
     e.preventDefault();
     this.setState({
-      visible:true
+      visible: true
     })
   }
 
@@ -86,11 +87,11 @@ class Index extends Component {
       let paperRecord = {};
       paperRecord.sequence = i;
       //多选
-      if(values[i] instanceof Array){
+      if (values[i] instanceof Array) {
         let arr = values[i];
         //加上字符串后数组自动转为,分割的字符串
-        paperRecord.reply=arr+'';
-      }else{
+        paperRecord.reply = arr + '';
+      } else {
         paperRecord.reply = values[i];
       }
       arr.push(paperRecord);
@@ -98,21 +99,21 @@ class Index extends Component {
     return arr;
   }
 
-  renderFinishedState(){
+  renderFinishedState() {
     let questions = [];
     this.props.form.validateFields((err, values) => {
       if (!err) {
-          this.packageFormToObject(values).map((item)=>{
-            let reply = (item.reply).trim();
-            if(typeof reply == "undefined" || reply == null || reply == ""){
-              questions.push(<Button key={item.sequence} style={{marginRight:10}}>{item.sequence}</Button>)
-            }else{
-              questions.push(<Button key={item.sequence} style={{marginRight:10}} type='primary'>{item.sequence}</Button>)
-            }
-          })
+        this.packageFormToObject(values).map((item) => {
+          let reply = (item.reply).trim();
+          if (typeof reply == "undefined" || reply == null || reply == "") {
+            questions.push(<Button key={item.sequence} style={{ marginRight: 10 }}>{item.sequence}</Button>)
+          } else {
+            questions.push(<Button key={item.sequence} style={{ marginRight: 10 }} type='primary'>{item.sequence}</Button>)
+          }
+        })
       }
     })
-    return(
+    return (
       questions
     )
   }
@@ -121,11 +122,11 @@ class Index extends Component {
     this.submit();
   }
 
-  handleOk(){
+  handleOk() {
     this.submit();
   }
 
-  handleCancel(){
+  handleCancel() {
     this.setState({
       visible: false,
     });
@@ -133,10 +134,20 @@ class Index extends Component {
 
   render() {
 
+    window.onbeforeunload = function (e) {
+      var e = window.event || e;
+      e.returnValue = ("确定离开当前页面吗？若需离开，请临时保存！");
+    }
+
+    function banMenu() {
+      return false;
+    }
+    document.oncontextmenu = banMenu;
+
     const { getFieldDecorator } = this.props.form;
 
     let paper = [];
-  
+
     this.state.list.map((item, index) => {
       paper.push(questionShow(item, index))
     });
@@ -194,7 +205,7 @@ class Index extends Component {
             </div>
             <FormItem>
               {getFieldDecorator(String(record.sequence), {
-                initialValue:isEmpty(record.reply) ? '' : record.reply
+                initialValue: isEmpty(record.reply) ? '' : record.reply
               })(
                 <RadioGroup >
                   <Radio className="selects" style={{ display: 'block' }} value="0">正确</Radio>
@@ -300,8 +311,8 @@ class Index extends Component {
           <Modal
             title="提示"
             visible={this.state.visible}
-            onOk={()=>this.handleOk()}
-            onCancel={()=>this.handleCancel()}
+            onOk={() => this.handleOk()}
+            onCancel={() => this.handleCancel()}
             okText='确认提交'
             cancelText='取消'
           >
