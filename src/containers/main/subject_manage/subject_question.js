@@ -163,7 +163,7 @@ class SubjectQuestion extends React.Component {
       dataIndex: 'difficulty',
     },{
       title: '知识点',
-      dataIndex: 'key_point',
+      dataIndex: 'keyPoint',
     },{
       title: '操作',
       key: 'action',

@@ -41,8 +41,8 @@ class Index extends React.Component {
 		})
 	}
 
-	handleExitClass(e) {
-		DELETE(URL.exit_class,1).then((res)=>{
+	handleExitClass(record) {
+		DELETE(URL.exit_class,record.class.id).then((res)=>{
 				if(res.status==0){
 					this.getDate();
 				}

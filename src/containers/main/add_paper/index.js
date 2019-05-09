@@ -5,6 +5,7 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const { TextArea } = Input;
 import moment from 'moment';
+import ShowPaper from '../exam_manage/show_paper.js';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 const confirm = Modal.confirm;
@@ -35,6 +36,8 @@ class Paper extends React.Component {
         usufruct:0,
         subjectName:''
       },
+      showId:undefined,
+      visiblePaperModal:false, //预览试卷是否显示   
     }
   }
 
@@ -135,8 +138,13 @@ class Paper extends React.Component {
         console.log(this.state.curSelectPaper);
       })
     })
- 
-   
+  }
+
+  showpaper(item){
+    this.setState({
+      showId:item.id,
+      visiblePaperModal:true,
+    })
   }
 
  
@@ -292,7 +300,7 @@ class Paper extends React.Component {
           let difficulty='简单'
           if(item.difficulty==1){difficulty='中等'} else if(item.difficulty==2){difficulty='困难'}
           return (     
-          <List.Item actions={[<Button  type="primary"><Link to={`/main/add_paper/choose_question/${item.id}/${item.subjectId}/${item.totalScore}`}>添加试题</Link></Button>,<Button  onClick={this.changePaper.bind(this,item)}>修改试卷</Button>, <Button type="danger" onClick={this.deletePaper.bind(this,item.id)}>删除</Button>]}>
+          <List.Item actions={[<Button  type="primary"><Link to={`/main/add_paper/choose_question/${item.id}/${item.subjectId}/${item.totalScore}`}>修改试题</Link></Button>,<Button  onClick={this.changePaper.bind(this,item)}>修改试卷</Button>, <Button  onClick={this.showpaper.bind(this,item)}>预览试卷</Button>,<Button type="danger" onClick={this.deletePaper.bind(this,item.id)}>删除</Button>]}>
               <List.Item.Meta         
                 title={"试卷名称:"+item.name}
                 description={"试卷描述:"+item.describe}
@@ -408,6 +416,15 @@ class Paper extends React.Component {
               </Row>
           </Form>
       </Modal>}
+      <Modal
+        width={1000}
+         visible={this.state.visiblePaperModal}
+         onCancel={()=>{this.setState({visiblePaperModal:false})}}
+         destroyOnClose={true}
+         footer={null}
+        >
+             <ShowPaper paperId={this.state.showId}/>
+        </Modal> 
       </div>
     )
   }

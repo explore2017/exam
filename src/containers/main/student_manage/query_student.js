@@ -1,7 +1,7 @@
 import React from 'react'
 import BreadcrumbCustom from '@components/BreadcrumbCustom'
 import { Form } from 'antd';
-import {Row,Col,Select,Input,Table, Icon, Divider,Button,Modal,Tag} from 'antd'
+import {Row,Col,Select,Input,Table, Icon, Divider,Button,Modal,Tag,Upload,message} from 'antd'
 const Option = Select.Option;
 const Search = Input.Search;
 const FormItem = Form.Item;
@@ -279,6 +279,19 @@ addClass(){
     let localeObj = {
       emptyText: '暂无数据'
     }
+    const props = {
+      name: 'file',
+      action: 'http://localhost:8000/teacher/large_student',
+
+      withCredentials:true,
+      onChange(info) {
+        if (info.file.response.status == '0') {
+          message.success(info.file.response.msg);
+        } else   {
+          message.error("批量导入学生失败，请检查文件格式");
+        }
+      },
+    };
     //表单布局
     const formItemLayout = {
       labelCol: {
@@ -316,6 +329,11 @@ addClass(){
                 <Option value={3}>班级</Option>
               </Select>
               <Button type="primary" className="f-l" onClick={this.showAllStudent.bind(this)}>所有学生</Button>
+              <Upload style={{marginLeft:20}} {...props}>
+    <Button>
+      <Icon type="upload" />批量导入学生
+    </Button>
+  </Upload>
             </Col>
           </Row>
           <div className="m-t-20">

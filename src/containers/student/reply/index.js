@@ -1,10 +1,13 @@
 import React, { Component, Fragment } from 'react'
 import { Card, Radio, Tag, Input, Statistic, Row, Col, Button, Form, Spin, Icon, message,Modal,Checkbox } from 'antd'
 import { get, post } from "@components/axios";
+import DaoJiShi from '../DaoJiShi'
 const Countdown = Statistic.Countdown;
 const RadioGroup = Radio.Group;
 const { TextArea } = Input;
 const FormItem = Form.Item;
+
+
 
 class Index extends Component {
   constructor(props) {
@@ -15,8 +18,10 @@ class Index extends Component {
       batchId: undefined,
       loading: true,
       finished: false,
-      visible:false
+      visible:false,
+      flag:true
     }
+    this.onFinish=this.onFinish.bind(this);
   }
 
   componentWillMount() {
@@ -28,7 +33,8 @@ class Index extends Component {
           list: res.data.data,
           countDown: res.data.countDown,
           batchId: id,
-          loading: false
+          loading: false,
+          flag:false
         })
         this.interval = setInterval(() => this.monitor(false), 60 * 1000);
       } else {
@@ -285,7 +291,8 @@ class Index extends Component {
         <div style={{ background: '#ECECEC', padding: 30 }}>
           <Row gutter={16}>
             <Col span={12}>
-              <Countdown style={{ position: 'fixed' }} title={'距离考试结束还有'} value={Date.now() + this.state.countDown} onFinish={() => this.onFinish()} />
+              <DaoJiShi time={this.state.countDown} onFinish={()=>this.onFinish} flag={this.state.flag}></DaoJiShi>
+              {/* <Countdown style={{ position: 'fixed' }} title={'距离考试结束还有'} value={Date.now() + this.state.countDown} onFinish={() => this.onFinish()} /> */}
             </Col>
           </Row>
           <div style={{ width: '60%', margin: 'auto', minWidth: 500 }}>

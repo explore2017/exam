@@ -18,7 +18,7 @@ class CreateExam extends React.Component {
     super()
     this.state = {
       pathList : ['考试管理','创建考试'],//面包屑路径
-      classId : 0,
+      classId : undefined,
       batches:[],       //batch数组
       paperList : [],
       paperModel:0,
@@ -43,6 +43,10 @@ class CreateExam extends React.Component {
         shortscore:0,
         completionscore:0,
         analysisscore:0,
+        simple:0,
+        middle:0,
+        hard:0,
+        keyPoint:[],
       visibleChangeModal:false,         //展示试卷
       visiblePaperModal:false,          //切换出卷模式
       visibleDesginModal:false, 
@@ -54,6 +58,7 @@ class CreateExam extends React.Component {
     this.addBatch=this.addBatch.bind(this);
     this.deleteBatch=this.deleteBatch.bind(this);
     this.handleCloseDesgin=this.handleCloseDesgin.bind(this);
+    this.desginPaper=this.desginPaper.bind(this);
   }
 
   //选择班级
@@ -136,11 +141,36 @@ class CreateExam extends React.Component {
           visibleChangeModal:false,
         })
   }
+  desginPaper(id){
+    this.props.form.validateFields(['classId', 'examName'],(err, values) => {
+      if(!err){
+        this.setState({visibleDesginModal:true});
+        get(URL.get_keypoint,{classId:values.classId})
+        .then((res)=>{
+          if(res.status==0){
+            this.setState({
+              keyPoint:res.data
+            })
+          }
+        })
+      }
+    })
+ 
+  }
 
   randomPaper(e){
     e.preventDefault();
     this.props.form.validateFields(['classId'],(err, values) => {
       if (!err) {
+      const {simple,middle,hard}=this.state
+      if(simple+middle+hard!=100){
+        Modal.error({
+          title: '出错了',
+          content: '请正确选择难度',
+          okText : '确定'
+        });
+        return;
+      }
       let describe='';
       describe= JSON.stringify({
           singeNumber:this.state.singeNumber,
@@ -161,6 +191,8 @@ class CreateExam extends React.Component {
           analysisNumber:this.state.analysisNumber,
           analysisKeyPoint:this.state.analysisKeyPoint,  
           analysisscore:this.state.analysisscore, 
+          simple:simple/100,
+          middle:middle/100,
         })
        let desginScore=(this.state.singeNumber*this.state.singescore)+(this.state.judgeNumber*this.state.judgescore)+(this.state.multipleNumber*this.state.multiplescore)
     +(this.state.completionNumber*this.state.completionscore)+(this.state.shortNumber*this.state.shortscore)+(this.state.analysisNumber*this.state.analysisscore);
@@ -238,6 +270,10 @@ deleteBatch(index){
    oldBatches.splice(index,1);
    this.setState({batches:oldBatches});
 }
+
+handleChange(value) {
+  console.log(`Selected: ${value}`);
+}
  
 
 
@@ -304,6 +340,12 @@ deleteBatch(index){
         )
       })
     }
+    let keyPoints=[];
+    keyPoints=this.state.keyPoint.map((item)=>{
+      return (
+        <Option value={item} key={item}>{item}</Option>
+      )
+    })
 
     let desginScore=(this.state.singeNumber*this.state.singescore)+(this.state.judgeNumber*this.state.judgescore)+(this.state.multipleNumber*this.state.multiplescore)
      +(this.state.completionNumber*this.state.completionscore)+(this.state.shortNumber*this.state.shortscore)+(this.state.analysisNumber*this.state.analysisscore);
@@ -356,7 +398,7 @@ deleteBatch(index){
               label="设计试卷"
             >  
              <Input value={this.state.paperId} disabled={true} style={{ width: 300}} placeholder="请设计试卷"></Input> 
-             <Button type="primary" style={{marginTop:0,marginLeft:10}} onClick={()=>{this.setState({visibleDesginModal:true})}} >设计试卷</Button>
+             <Button type="primary" style={{marginTop:0,marginLeft:10}} onClick={this.desginPaper} >设计试卷</Button>
              <Button style={{marginTop:0,marginLeft:10}} onClick={()=>{if(this.state.paperId==''||this.state.paperId==undefined||this.state.paperId==null){return;} this.setState({visiblePaperModal:true,showId:this.state.paperId})}} >预览试卷</Button>
               </FormItem> }
               <FormItem
@@ -470,6 +512,16 @@ deleteBatch(index){
                      <Option value={2}>困难</Option>
             </Select>
             </FormItem>
+            <FormItem
+             {...formItemLayoutTop}
+              label="简单:"
+            >
+            <InputNumber step={10}  formatter={value => `${value}%`} parser={value => value.replace('%', '')}  precision={0} defaultValue={0} min={0} max={100}  onChange={(value)=>this.setState({simple:value?value:0})}></InputNumber>
+            <span style={{marginLeft:20}}>中等：</span>              
+            <InputNumber step={10} formatter={value => `${value}%`} parser={value => value.replace('%', '')}  precision={0}   defaultValue={0} min={0} max={100}  onChange={(value)=>this.setState({middle:value?value:0})} style={{width:100}}></InputNumber>
+            <span style={{marginLeft:20}}>困难：</span>              
+            <InputNumber step={10} formatter={value => `${value}%`} parser={value => value.replace('%', '')}  precision={0}   defaultValue={0} min={0} max={100}  onChange={(value)=>this.setState({hard:value?value:0})} style={{width:100}}></InputNumber>
+            </FormItem>
          <FormItem
              {...formItemLayoutTop}
               label="单选题数量:"
@@ -477,8 +529,15 @@ deleteBatch(index){
             <InputNumber  precision={0} defaultValue={0} min={0}  onChange={(value)=>this.setState({singeNumber:value?value:0})}></InputNumber>
             <span style={{marginLeft:20}}>分数：</span>              
             <InputNumber  precision={1}   defaultValue={0} min={0}  onChange={(value)=>this.setState({singescore:value?value:0})} style={{width:100}}></InputNumber>
-            <span style={{marginLeft:20}}>知识点：</span>              
-            <Input  onChange={(e)=>this.setState({singeKeyPoint:e.target.value})} style={{width:150,marginLeft:0}}></Input>
+            <span style={{marginLeft:20}}>知识点：</span>  
+            <Select
+          mode="tags"
+          placeholder="请选择知识点"
+          style={{ width: 300 }}
+          onChange={(value)=>this.setState({singeKeyPoint:`${value}`})}
+        >
+          {keyPoints}
+        </Select>            
             </FormItem>
             <FormItem
              {...formItemLayoutTop}
@@ -488,7 +547,14 @@ deleteBatch(index){
             <span style={{marginLeft:20}}>分数：</span>              
             <InputNumber  precision={1} defaultValue={0} min={0}  onChange={(value)=>this.setState({judgescore:value?value:0})} style={{width:100}}></InputNumber>
             <span style={{marginLeft:20}}>知识点：</span>
-            <Input onChange={(e)=>this.setState({judgeKeyPoint:e.target.value})} style={{width:150,marginLeft:0}}></Input>
+            <Select
+          mode="tags"
+          placeholder="请选择知识点"
+          style={{ width: 300 }}
+          onChange={(value)=>this.setState({judgeKeyPoint:`${value}`})}
+        >
+          {keyPoints}
+          </Select>   
             </FormItem>
             
             <FormItem
@@ -499,7 +565,14 @@ deleteBatch(index){
             <span style={{marginLeft:20}}>分数：</span>              
             <InputNumber  precision={1} defaultValue={0} min={0}  onChange={(value)=>this.setState({multiplescore:value?value:0})} style={{width:100}}></InputNumber>
             <span style={{marginLeft:20}}>知识点：</span>
-            <Input onChange={(e)=>this.setState({multipleKeyPoint:e.target.value})} style={{width:150,marginLeft:0}}></Input>
+            <Select
+          mode="tags"
+          placeholder="请选择知识点"
+          style={{ width: 300 }}
+          onChange={(value)=>this.setState({multipleKeyPoint:`${value}`})}
+        >
+          {keyPoints}
+          </Select>   
             </FormItem>
             <FormItem
              {...formItemLayoutTop}
@@ -509,7 +582,14 @@ deleteBatch(index){
             <span style={{marginLeft:20}}>分数：</span>              
             <InputNumber  precision={1} defaultValue={0} min={0}  onChange={(value)=>this.setState({completionscore:value?value:0})} style={{width:100}}></InputNumber>
             <span style={{marginLeft:20}}>知识点：</span>
-            <Input onChange={(e)=>this.setState({completionKeyPoint:e.target.value})} style={{width:150,marginLeft:0}}></Input>
+            <Select
+          mode="tags"
+          placeholder="请选择知识点"
+          style={{ width: 300 }}
+          onChange={(value)=>this.setState({completionKeyPoint:`${value}`})}
+        >
+          {keyPoints}
+          </Select>  
             </FormItem>
             <FormItem
              {...formItemLayoutTop}
@@ -519,8 +599,14 @@ deleteBatch(index){
             <span style={{marginLeft:20}}>分数：</span>              
             <InputNumber  precision={1} defaultValue={0} min={0}  onChange={(value)=>this.setState({shortscore:value?value:0})} style={{width:100}}></InputNumber>
             <span style={{marginLeft:20}}>知识点：</span>
-     
-            <Input onChange={(e)=>this.setState({shortKeyPoint:e.target.value})} style={{width:150,marginLeft:0}}></Input>
+            <Select
+          mode="tags"
+          placeholder="请选择知识点"
+          style={{ width: 300 }}
+          onChange={(value)=>this.setState({shortKeyPoint:`${value}`})}
+        >
+          {keyPoints}
+          </Select>  
             </FormItem>
             <FormItem
              {...formItemLayoutTop}
@@ -530,10 +616,16 @@ deleteBatch(index){
             <span style={{marginLeft:20}}>分数：</span>              
             <InputNumber  precision={1} defaultValue={0} min={0}  onChange={(value)=>this.setState({analysisscore:value?value:0})} style={{width:100}}></InputNumber>
             <span style={{marginLeft:20}}>知识点：</span>
-            <Input onChange={(e)=>this.setState({analysisKeyPoint:e.target.value})} style={{width:150,marginLeft:0}}></Input>
+            <Select
+          mode="tags"
+          placeholder="请选择知识点"
+          style={{ width: 300 }}
+          onChange={(value)=>this.setState({analysisKeyPoint:`${value}`})}
+        >
+          {keyPoints}
+          </Select> 
             </FormItem>      
 </Form>
-           <span>提示：多个知识点请用逗号隔开</span> 
         </Modal>    
         <Modal
         title="添加批次"

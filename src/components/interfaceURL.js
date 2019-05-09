@@ -192,6 +192,9 @@ export const add_teacher = "/manage/insertTeacher?";
 //创建考试
 export const create_exam = "exam";
 
+//获得知识点
+export const get_keypoint = "class/key_point";
+
 //老师获得考试
 export const get_manage_exam = "exam";
 
