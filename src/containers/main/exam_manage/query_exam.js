@@ -7,11 +7,8 @@ const Search = Input.Search;
 const FormItem = Form.Item;
 const confirm = Modal.confirm;
 import {put,get,DELETE} from '@components/axios.js';
-import * as classinfoActions from '../../../actions/classinfo'
-import { connect } from 'react-redux'
 import * as URL from '@components/interfaceURL.js'
 import { Link  } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
 
 
 class QueryExam extends React.Component {
@@ -190,6 +187,12 @@ class QueryExam extends React.Component {
           <Link
               to={`/main/exam_manage/exam_details/${record.exam.id}`}
             >查看考试详情</Link>
+          </Button>
+          <Divider type="vertical" />
+          <Button size="small" >
+          <Link
+              to={`/main/exam_manage/exam_score/${record.exam.id}`}
+            >查看考试成绩</Link>
           </Button>
         </span>
       ),

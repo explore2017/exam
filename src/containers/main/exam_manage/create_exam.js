@@ -200,7 +200,7 @@ class CreateExam extends React.Component {
         subjectId:values.classId,
         totalScore:desginScore,
         difficulty:this.state.difficulty,
-        describe:describe, 
+        describe:describe,
       }).then((res)=>{
         if(res.status==0){
           this.setState({

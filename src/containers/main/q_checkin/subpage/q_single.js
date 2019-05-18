@@ -1,11 +1,12 @@
 //单选题
 import React from 'react';
 import {post} from '@components/axios.js'
-import { Form,Input,Select,Icon,Radio,Row,Col,Button,Modal,InputNumber  } from 'antd';
+import { Form,Input,Select,Icon,Radio,Row,Col,Button,Modal,InputNumber,Upload  } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const { TextArea } = Input;
 import * as URL from '@components/interfaceURL.js'
+import UploadImg from '../subpage/upload_img'
 
 let localCounter = 4;
 class QSingle extends React.Component {
@@ -118,6 +119,7 @@ class QSingle extends React.Component {
 
   render(){
     //验证
+    
     const { getFieldDecorator,getFieldValue } = this.props.form;
     getFieldDecorator('keys', { initialValue: [{
       option : 'A',
@@ -176,6 +178,7 @@ class QSingle extends React.Component {
 
     })
     
+
     return(
       <div>
         <Form onSubmit={this.handleSubmit.bind(this)}>
@@ -226,6 +229,16 @@ class QSingle extends React.Component {
               <InputNumber  style={{ width: 120 }}/>      
             )}
           </FormItem>
+          <FormItem
+           {...formItemLayout}
+           extra={"支持扩展名：.png .jpg, 最大5M 最多3张"}
+            label="图片"
+          >
+            {getFieldDecorator('img')(
+             <UploadImg/>   
+            )}
+          </FormItem>
+
           <FormItem
             {...formItemLayout}
             label="题干"

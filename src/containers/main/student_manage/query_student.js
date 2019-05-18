@@ -282,7 +282,6 @@ addClass(){
     const props = {
       name: 'file',
       action: 'http://localhost:8000/teacher/large_student',
-
       withCredentials:true,
       onChange(info) {
         if (info.file.response.status == '0') {

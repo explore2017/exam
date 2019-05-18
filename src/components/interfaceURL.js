@@ -210,6 +210,15 @@ export const delete_exam_batch = "exam/batch/";
 //老师获得批次详细信息
 export const get_batch_details = "exam/batch/details";
 
+//老师获得考试成绩
+export const get_exam_score = "exam/score";
+
+//老师获得考试成绩
+export const export_exam_score = "exam/score/export";
+
+//老师获得考试成绩
+export const change_exam = "exam";
+
 
 export const delete_batch_student = "exam/batch/details/";
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Card, Breadcrumb, Icon, Button, Modal,Tag } from 'antd';
+import { Table, Card, Breadcrumb, Icon, Button, Modal, Tag } from 'antd';
 import * as URL from '@components/interfaceURL.js'
 
 import { get, post } from "@components/axios";
@@ -61,9 +61,9 @@ class Index extends React.Component {
 			dataIndex: 'score',
 			key: 'score',
 			render: (text, record) => {
-					return (
-						<span>{text}分</span>
-					)
+				return (
+					<span>{text}分</span>
+				)
 			}
 		}];
 

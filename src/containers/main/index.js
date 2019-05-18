@@ -51,6 +51,7 @@ import QueryExam from './exam_manage/query_exam.js';
 import ExamDetails from './exam_manage/exam_details';
 import BatchDetails from './exam_manage/batch_details';
 import ReadPaper from './exam_manage/read_paper.js';
+import ExamScore from './exam_manage/exam_score';
 
 //个人中心
 import ChangePassword from './personal_center/change_password';
@@ -179,7 +180,7 @@ class Main extends React.Component {
 			<div>
 				<div id="leftMenu">
 					{/* <img className="logo" src="/sxt_exam/lqw/images/logo.jpg"/> */}
-					<img className="logo" src={require("@assets/images/logo.jpg")}/>
+					<img className="logo" src={require("@assets/images/pencil.svg")}/>
 					<div>
 		        <Menu
 		          mode="inline"
@@ -269,6 +270,7 @@ class Main extends React.Component {
 							<Route path="/main/exam_manage/exam_details/:examId/:batchId" component={BatchDetails}/>
 							<Route path="/main/exam_manage/exam_details/:examId" component={ExamDetails}/>
 							<Route path="/main/exam_manage/query_exam" component={QueryExam}/>
+							<Route path="/main/exam_manage/exam_score/:examId" component={ExamScore}/>
                
 								 {/*科目管理 */}
 							<Route path="/main/subject/:subjectId" component={SubjectQuestion}/>
