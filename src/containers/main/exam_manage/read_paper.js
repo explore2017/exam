@@ -106,6 +106,14 @@ class ReadPaper extends Component {
     function questionShow(record, index) {
       const item = record.question;
       let selects = []
+      let imgs=[];
+      if(item.img!=null){
+        imgs=item.img.split("&&&");
+      }  
+      let images=[]
+      for (var i = 0; i < imgs.length; i++) {
+           images.push( <img class="questionimg "  src={imgs[i]} />)
+      }
       if (item.questionTypeId === 0) {
         let single = []
         let nextOptionCode = 'A'.charCodeAt(0);
