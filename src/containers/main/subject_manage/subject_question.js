@@ -1,7 +1,7 @@
 import React from 'react'
 import BreadcrumbCustom from '@components/BreadcrumbCustom'
 import { Form } from 'antd';
-import {Row,Col,Select,Input,Table, Icon, Divider,Button,Modal } from 'antd'
+import {Row,Col,Select,Input,Table, Icon, Divider,Button,Modal,Upload } from 'antd'
 const Option = Select.Option;
 const Search = Input.Search;
 const confirm = Modal.confirm;
@@ -23,6 +23,7 @@ class SubjectQuestion extends React.Component {
         defaultCurrent : 1,
       },
       visibleChangeModal : false,//修改框是否显示
+      visibleupdateModal : false,//提示样本文件
       curSelectQuestion : {
         id:0,
         name:'',
@@ -145,6 +146,19 @@ class SubjectQuestion extends React.Component {
   
 
   render(){
+    const props = {
+      name: 'file',
+      action: 'http://localhost:8000/question/large_question?subjectId='+this.props.match.params.subjectId,
+      withCredentials:true,
+      onChange(info) {
+        if (info.file.response.status == '0') {
+          message.success(info.file.response.msg);
+        } else   {
+          message.error("批量导入试题失败失败，请检查文件格式");
+        }
+      },
+    };
+
     const columns = [{
       title: '题目编号',
       dataIndex: 'id',
@@ -154,7 +168,7 @@ class SubjectQuestion extends React.Component {
     },{
       title: '题目内容',
       dataIndex: 'content',
-      width:500
+      width:500,
     },{
       title: '题目答案',
       dataIndex: 'answer',
@@ -195,7 +209,10 @@ class SubjectQuestion extends React.Component {
                 <Option value={1}>题目内容</Option>
                 <Option value={2}>题目类型</Option>
               </Select>
-              <Button type="primary" className="f-l" onClick={this.showAllQuestion.bind(this)}>所有题目</Button>
+              <Button type="primary" className="f-l" onClick={this.showAllQuestion.bind(this)}>所有题目</Button>           
+              <Button  style={{marginLeft:20}} onClick={()=>this.setState({visibleupdateModal:true})}>
+               批量导入试题
+              </Button>
             </Col>
           </Row>
           <div className="m-t-20">
@@ -208,8 +225,26 @@ class SubjectQuestion extends React.Component {
               onChange={this.handleTableChange.bind(this)}
             />
           </div>
-         
         </div>
+        <Modal
+            title="注意事项"
+            visible={this.state.visibleupdateModal}
+            footer={null}
+            onCancel={()=>this.setState({visibleupdateModal:false})}           
+          >
+          <p>批量导入试题必须遵循一定的格式，请点击下载样本文件 </p>
+          <Button type='primary' onClick={()=>{  
+            let url='http://localhost:8000/question/importFile';
+           window.location.href=url;
+}}>下载样本文件</Button>
+ <Upload style={{marginLeft:20}} {...props}>
+ <Button>
+<Icon type="upload"/>
+上传试题文件
+ </Button>
+ 
+ </Upload>
+          </Modal>
       </div>
     )
   }

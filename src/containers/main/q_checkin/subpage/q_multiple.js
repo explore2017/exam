@@ -6,15 +6,18 @@ const Option = Select.Option;
 const { TextArea } = Input;
 import {post} from '@components/axios.js'
 import * as URL from '@components/interfaceURL.js'
+import UploadImg from '../subpage/upload_img'
 
 let localCounter = 4;
 class QMultiple extends React.Component {
   constructor(){
     super();
     this.state = {
-      fileList : [],
       rightAnswer : [],
+      urlList:[],
+      update:false,
     }
+    this.addImgUrl=this.addImgUrl.bind(this);
   }
 
   //提交
@@ -31,6 +34,8 @@ class QMultiple extends React.Component {
           });
           return;
         }
+        let {urlList}=this.state;
+        let img='';
         let choice = [];
         let selects='';
         let answer='';
@@ -45,6 +50,13 @@ class QMultiple extends React.Component {
             }else{
               selects+='&&&'+choice[i]
             }           
+        }
+        for(var i in urlList){
+          if(img==''){
+            img+=urlList[i]
+          }else{
+            img+='&&&'+urlList[i]
+          }     
         }
         for(var i in  this.state.rightAnswer){
           if(answer==''){
@@ -66,8 +78,10 @@ class QMultiple extends React.Component {
           keyPoint:values.knowledgePoint,
           defaultScore:values.defaultScore,
           title:'多选题',
+          img:img,
         }).then((res)=>{
           if(res.status==0){
+            this.setState({urlList:[],update:!this.state.update});
             this.props.form.resetFields()
           }         
         }); 
@@ -76,7 +90,9 @@ class QMultiple extends React.Component {
       }
     });
   }
-
+  addImgUrl(urlList){
+    this.setState({urlList})
+}
   //点击答案
   clickWhichAnswer(option){
     if(this.state.rightAnswer.indexOf(option) === -1) {
@@ -252,6 +268,15 @@ class QMultiple extends React.Component {
              initialValue:3
             })(
               <InputNumber  style={{ width: 120 }}/>      
+            )}
+          </FormItem>
+          <FormItem
+           {...formItemLayout}
+           extra={"支持扩展名：.png .jpg, 最大5M 最多三张 "}
+            label="图片"
+          >
+            {getFieldDecorator('img')(
+             <UploadImg update={this.state.update}  addImgUrl={this.addImgUrl} />   
             )}
           </FormItem>
           <FormItem

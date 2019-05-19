@@ -167,7 +167,15 @@ class Index extends Component {
 
     function questionShow(record, index) {
       const item = record.question;
-      let selects = []
+      let selects = [];
+      let imgs=[];
+      if(item.img!=null){
+        imgs=item.img.split("&&&");
+      }
+      let images=[]
+      for (var i = 0; i < imgs.length; i++) {
+           images.push( <img class="questionimg "  src={imgs[i]} />)
+      }
       if (item.questionTypeId === 0) {
         let single = []
         let nextOptionCode = 'A'.charCodeAt(0);
@@ -186,7 +194,9 @@ class Index extends Component {
             <div className="question-single">
               <Tag>第{index + 1}题</Tag>
               <div className="content">
-                {item.content + "(" + item.title + "，" + record.singleScore + "分)"}
+              {item.content }
+             {images}
+           { "(" + item.title + "，" + record.singleScore + "分)"}        
               </div>
               <FormItem>
                 {getFieldDecorator(String(record.sequence), {
@@ -206,7 +216,9 @@ class Index extends Component {
           <div className="question-single">
             <Tag>第{index + 1}题</Tag>
             <div className="content">
-              {item.content + "(" + item.title + "，" + record.singleScore + "分)"}
+            {item.content }
+            {images}
+           { "(" + item.title + "，" + record.singleScore + "分)"}        
             </div>
             <FormItem>
               {getFieldDecorator(String(record.sequence), {
@@ -237,7 +249,9 @@ class Index extends Component {
           <div className="question-single">
             <Tag>第{index + 1}题</Tag>
             <div className="content">
-              {item.content + "(" + item.title + "，" + record.singleScore + "分)"}
+            {item.content }
+            {images}
+           { "(" + item.title + "，" + record.singleScore + "分)"}        
             </div>
             <FormItem>
               {getFieldDecorator(String(record.sequence), {
@@ -255,7 +269,9 @@ class Index extends Component {
           <div className="question-single">
             <Tag>第{index + 1}题</Tag>
             <div className="content">
-              {item.content + "(" + item.title + "，" + record.singleScore + "分)"}
+            {item.content }
+            {images}
+           { "(" + item.title + "，" + record.singleScore + "分)"}        
             </div>
             <div className="content" >
               <FormItem>
@@ -273,7 +289,9 @@ class Index extends Component {
           <div className="question-single">
             <Tag>第{index + 1}题</Tag>
             <div className="content">
-              {item.content + "(" + item.title + "，" + record.singleScore + "分)"}
+            {item.content }
+            {images}
+           { "(" + item.title + "，" + record.singleScore + "分)"}        
             </div>
             <div className="content" >
               <FormItem>
@@ -302,7 +320,6 @@ class Index extends Component {
           <Row gutter={16}>
             <Col span={12}>
               <DaoJiShi time={this.state.countDown} onFinish={()=>this.onFinish} flag={this.state.flag}></DaoJiShi>
-              {/* <Countdown style={{ position: 'fixed' }} title={'距离考试结束还有'} value={Date.now() + this.state.countDown} onFinish={() => this.onFinish()} /> */}
             </Col>
           </Row>
           <div style={{ width: '60%', margin: 'auto', minWidth: 500 }}>

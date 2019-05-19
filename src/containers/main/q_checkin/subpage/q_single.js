@@ -13,9 +13,11 @@ class QSingle extends React.Component {
   constructor(){
     super();
     this.state = {
-      fileList : [],
       rightAnswer : '',
+      urlList:[],
+      update:false,
     } 
+    this.addImgUrl=this.addImgUrl.bind(this);
   }
   
 
@@ -32,6 +34,8 @@ class QSingle extends React.Component {
           });
           return;
         }
+        let {urlList}=this.state;
+        let img='';
         let choice = [];
         let selects='';
         for(let variable in values) {
@@ -44,7 +48,14 @@ class QSingle extends React.Component {
             selects+=choice[i]
           }else{
             selects+='&&&'+choice[i]
-          }
+          }     
+        }
+        for(var i in urlList){
+          if(img==''){
+            img+=urlList[i]
+          }else{
+            img+='&&&'+urlList[i]
+          }     
         }
         //提交题目数据  
         post(URL.add_question,{
@@ -58,8 +69,10 @@ class QSingle extends React.Component {
           keyPoint:values.knowledgePoint,
           defaultScore:values.defaultScore,
           title:'单选题',
+          img:img,
         }).then((res)=>{
           if(res.status==0){
+            this.setState({urlList:[],update:!this.state.update});
             this.props.form.resetFields()
           }         
         }); 
@@ -76,6 +89,7 @@ class QSingle extends React.Component {
 
   //增加选项
   addOption(){
+    console.log(this.state.urlList)
     const { form } = this.props;
     const keys = form.getFieldValue('keys');
     let nextOptionCode = 'A'.charCodeAt(0);
@@ -116,6 +130,9 @@ class QSingle extends React.Component {
     this.state.answerOptions[i].answer = e.target.value;
   }
 
+  addImgUrl(urlList){
+      this.setState({urlList})
+  }
 
   render(){
     //验证
@@ -231,11 +248,11 @@ class QSingle extends React.Component {
           </FormItem>
           <FormItem
            {...formItemLayout}
-           extra={"支持扩展名：.png .jpg, 最大5M 最多3张"}
+           extra={"支持扩展名：.png .jpg, 最大5M 最多三张 "}
             label="图片"
           >
             {getFieldDecorator('img')(
-             <UploadImg/>   
+             <UploadImg update={this.state.update}  addImgUrl={this.addImgUrl} />   
             )}
           </FormItem>
 
@@ -259,6 +276,7 @@ class QSingle extends React.Component {
               <Col sm={20} xs={24}>
                 <Row>
                   <Col sm={4} xs={4} offset={13}>
+               
                     <Button type="primary" className="f-r" onClick={this.addOption.bind(this)}>新增选项</Button>
                   </Col>
                   <Col sm={4} xs={4}>

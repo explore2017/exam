@@ -309,3 +309,9 @@
   margin-top: 100px;
   width:150px;
 }
+.questionimg{
+  width: auto;
+	height: auto;
+	max-width: 200px;
+	max-height: 500px;
+}

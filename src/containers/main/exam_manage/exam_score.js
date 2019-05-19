@@ -102,7 +102,7 @@ class ExamScore extends React.Component {
  }
 
  exportScore(){
-   let url='http://localhost:8000/exam/score/export?examId=5'
+   let url='http://localhost:8000/exam/score/export?examId='+this.props.match.params.examId
    window.location.href=url;
 
  }

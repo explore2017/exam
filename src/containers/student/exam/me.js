@@ -2,7 +2,6 @@ import React from 'react'
 import { Table, Card, Breadcrumb, Icon, Button, Modal,Tag } from 'antd';
 import { Link } from 'react-router-dom'
 import * as URL from '@components/interfaceURL.js'
-
 import { get, post } from "@components/axios";
 
 class Index extends React.Component {
@@ -102,6 +101,14 @@ class Index extends React.Component {
 			title: '考试截止时间',
 			dataIndex: 'batch.endTime',
 			key: 'batch.endTime',
+		}, {
+			title: '查看考卷',
+			key: 'exam_paper',
+			render:(text,record)=>{
+				return (
+					<Button disabled={!record.examPaperStatus} size="small" ><Link to={`/student/exam/paper/${record.batch.id}`} >查看考卷</Link></Button>
+				)
+			}
 		}, {
 			title: '状态',
 			dataIndex:'status',

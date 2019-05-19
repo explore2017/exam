@@ -329,10 +329,10 @@ addClass(){
               </Select>
               <Button type="primary" className="f-l" onClick={this.showAllStudent.bind(this)}>所有学生</Button>
               <Upload style={{marginLeft:20}} {...props}>
-    <Button>
-      <Icon type="upload" />批量导入学生
-    </Button>
-  </Upload>
+              <Button>
+              <Icon type="upload" />批量导入学生
+              </Button>
+              </Upload>
             </Col>
           </Row>
           <div className="m-t-20">

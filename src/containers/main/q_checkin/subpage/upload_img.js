@@ -13,7 +13,8 @@ class UploadImg extends React.Component {
     this.state = {
      previewVisible: false,
      previewImage: '',
-     fileList : [],   
+     fileList : [],
+     show:true, 
     } 
     this.onFileChange=this.onFileChange.bind(this);
     this.handleCancel=this.handleCancel.bind(this);
@@ -32,13 +33,36 @@ class UploadImg extends React.Component {
   };
 
   onFileChange(info){
-  // console.log(info)
+    const fileList=[];
+    const urlList=[];
+    info.fileList.map((item)=>{
+          fileList.push({
+            uid:item.uid,
+            status:item.status,
+            url:item.response.data,
+          });
+          urlList.push(item.response.data);
+    })
+    this.setState({fileList});
+    this.props.addImgUrl(urlList);
   }
+  componentUpdate(){
+      this.setState({
+        show:false,
+      },()=>{this.setState({show:true,})})
+  }
+
+componentWillReceiveProps(nextprops){
+  if(this.props.update!=nextprops.update){
+    this.componentUpdate();
+  }
+}
+  
 
 
   render(){
     //验证
-    const { previewVisible, previewImage, fileList } = this.state;
+    const { previewVisible, previewImage, fileList,show } = this.state;
     const uploadButton = (
         <div>
           <Icon type="plus" />
@@ -72,17 +96,17 @@ const props = {
 }
     return(
       <div>
-        {this.state.a}
+        {show?
      <Upload
      {...props}      
           onPreview={this.handlePreview}
           onChange={this.onFileChange}
+          // onRemove={this.onFileRemove}
         >
           {fileList.length >= 3 ? null : uploadButton}
-        </Upload>
+        </Upload>:''  }    
         <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
-          {previewImage}
         </Modal>
       </div>
     )

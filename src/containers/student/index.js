@@ -8,6 +8,7 @@ import Exam from './exam/enroll'
 import MyExam from './exam/me'
 import MyPassword from './center/password'
 import MyScore from './score/me'
+import ExamPaper from './exam/exam_paper'
 const SubMenu = Menu.SubMenu;
 
 class Student extends React.Component {
@@ -78,7 +79,8 @@ class Student extends React.Component {
 					<div className="right-box">
 						<Route path="/student/class" component={MyClass} />
 						<Route path="/student/exam/enroll" component={Exam} />
-						<Route path="/student/exam/me" component={MyExam} />
+						<Route  path="/student/exam/paper/:batchId" component={ExamPaper} />
+						<Route path="/student/exam/me" component={MyExam} />					
 						<Route path="/student/score/me" component={MyScore} />
 						<Route path="/student/center/info" component={MyInfo} />
 						<Route path="/student/center/password" component={MyPassword} />

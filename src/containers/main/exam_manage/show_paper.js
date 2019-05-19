@@ -27,6 +27,11 @@ class ShowPaper extends React.Component {
   }
   questionShow(item, singleScore, index) {
     let selects = []
+    const imgs=item.img.split("&&&");
+    let images=[]
+    for (var i = 0; i < imgs.length; i++) {
+         images.push( <img class="questionimg "   src={imgs[i]} />)
+    }
     if (item.questionTypeId === 0) {
       let single = []
       let nextOptionCode = 'A'.charCodeAt(0);
@@ -44,7 +49,9 @@ class ShowPaper extends React.Component {
         <div className="question-single">
           <Tag>第{index + 1}题</Tag>
           <div className="content">
-            {item.content + "(" + item.title + "，" + singleScore + "分)"}
+            {item.content }
+            {images}
+           { "(" + item.title + "，" + singleScore + "分)"}          
           </div>
           <RadioGroup  >
             {single}
@@ -58,7 +65,9 @@ class ShowPaper extends React.Component {
         <div className="question-single">
           <Tag>第{index + 1}题</Tag>
           <div className="content">
-            {item.content + "(" + item.title + "，" + singleScore + "分)"}
+          {item.content }
+            {images}
+           { "(" + item.title + "，" + singleScore + "分)"}         
           </div>
           <RadioGroup >
             <Radio className="selects" style={{ display: 'block' }} value="0">正确</Radio>
@@ -84,7 +93,9 @@ class ShowPaper extends React.Component {
         <div className="question-single">
           <Tag>第{index + 1}题</Tag>
           <div className="content">
-            {item.content + "(" + item.title + "，" + singleScore + "分)"}
+          {item.content }
+            {images}
+           { "(" + item.title + "，" + singleScore + "分)"}         
           </div>
           <Checkbox.Group  >
             {multiple}
@@ -97,7 +108,9 @@ class ShowPaper extends React.Component {
         <div className="question-single">
           <Tag>第{index + 1}题</Tag>
           <div className="content">
-            {item.content + "(" + item.title + "，" + singleScore + "分)"}
+          {item.content }
+            {images}
+           { "(" + item.title + "，" + singleScore + "分)"}         
           </div>
           <div className="content" >
             <Input style={{ width: "10%" }} ></Input>
@@ -109,7 +122,9 @@ class ShowPaper extends React.Component {
         <div className="question-single">
           <Tag>第{index + 1}题</Tag>
           <div className="content">
-            {item.content + "(" + item.title + "，" + singleScore + "分)"}
+          {item.content }
+            {images}
+           { "(" + item.title + "，" + singleScore + "分)"}         
           </div>
           <div className="content" >
             <TextArea autosize={{ minRows: 10, maxRows: 20 }}    ></TextArea>

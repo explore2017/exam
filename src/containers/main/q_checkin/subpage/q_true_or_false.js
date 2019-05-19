@@ -7,15 +7,18 @@ const Option = Select.Option;
 const { TextArea } = Input;
 const RadioGroup = Radio.Group;
 import * as URL from '@components/interfaceURL.js'
+import UploadImg from '../subpage/upload_img'
 
 class QTrueOrFalse extends React.Component {
   constructor(){
     super();
     this.state = {
-      fileList : [],
       rightAnswer : '',
-      localCounter : 0
+      localCounter : 0,
+      urlList:[],  
+      update:false,   
     }
+    this.addImgUrl=this.addImgUrl.bind(this);
   }
 
   //提交
@@ -23,7 +26,15 @@ class QTrueOrFalse extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-
+        let {urlList}=this.state;
+        let img='';
+        for(var i in urlList){
+          if(img==''){
+            img+=urlList[i]
+          }else{
+            img+='&&&'+urlList[i]
+          }     
+        }
         //提交题目信息
         post(URL.add_question,{
           content:values.tigan,
@@ -35,14 +46,19 @@ class QTrueOrFalse extends React.Component {
           keyPoint:values.knowledgePoint,
           defaultScore:values.defaultScore,
           title:'判断题',
+          img:img,
         }).then((res)=>{
           if(res.status==0){
-            this.props.form.resetFields()
+            this.setState({urlList:[],update:!this.state.update});
+            this.props.form.resetFields();
           }         
         }); 
       }
     });
   }
+  addImgUrl(urlList){
+    this.setState({urlList});
+}
 
   render(){
     //验证
@@ -115,6 +131,15 @@ class QTrueOrFalse extends React.Component {
              initialValue:3
             })(
               <InputNumber  style={{ width: 120 }}/>      
+            )}
+          </FormItem>
+          <FormItem
+           {...formItemLayout}
+           extra={"支持扩展名：.png .jpg, 最大5M 最多三张 "}
+            label="图片"
+          >
+            {getFieldDecorator('img')(
+             <UploadImg update={this.state.update}  addImgUrl={this.addImgUrl} />   
             )}
           </FormItem>
           <FormItem

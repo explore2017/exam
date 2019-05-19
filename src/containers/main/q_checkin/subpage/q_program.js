@@ -6,15 +6,18 @@ const Option = Select.Option;
 const { TextArea } = Input;
 import {post} from '@components/axios.js';
 import * as URL from '@components/interfaceURL.js'
+import UploadImg from '../subpage/upload_img'
 
 
 class QProgram extends React.Component {
   constructor(){
     super();
     this.state = {
-      fileList : [],
-      localCounter : 0
+      localCounter : 0,
+      urlList:[],
+      update:false,
     }
+    this.addImgUrl=this.addImgUrl.bind(this);
   }
 
   //提交
@@ -22,6 +25,15 @@ class QProgram extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        let {urlList}=this.state;
+        let img='';
+        for(var i in urlList){
+          if(img==''){
+            img+=urlList[i]
+          }else{
+            img+='&&&'+urlList[i]
+          }     
+        }
        //提交题目信息
       post(URL.add_question,{
         content:values.tigan,
@@ -32,8 +44,10 @@ class QProgram extends React.Component {
         keyPoint:values.knowledgePoint,
         defaultScore:values.defaultScore,
         title:'分析题',
+        img:img,
       }).then((res)=>{
         if(res.status==0){
+          this.setState({urlList:[],update:!this.state.update});
           this.props.form.resetFields()
         }         
       });
@@ -42,6 +56,9 @@ class QProgram extends React.Component {
     });
   }
 
+  addImgUrl(urlList){
+    this.setState({urlList})
+}
 
   //选项输入框改变
   optionInputChange(i,e){
@@ -120,6 +137,15 @@ class QProgram extends React.Component {
              initialValue:3
             })(
               <InputNumber  style={{ width: 120 }}/>      
+            )}
+          </FormItem>
+          <FormItem
+           {...formItemLayout}
+           extra={"支持扩展名：.png .jpg, 最大5M 最多三张 "}
+            label="图片"
+          >
+            {getFieldDecorator('img')(
+             <UploadImg update={this.state.update}  addImgUrl={this.addImgUrl} />   
             )}
           </FormItem>
           <FormItem
