@@ -32,7 +32,7 @@ class ShowPaper extends React.Component {
       imgs=item.img.split("&&&");
     }  
     for (var i = 0; i < imgs.length; i++) {
-         images.push( <img class="questionimg "   src={imgs[i]} />)
+         images.push( <img class="questionimg " src={imgs[i]} />)
     }
     if (item.questionTypeId === 0) {
       let single = []

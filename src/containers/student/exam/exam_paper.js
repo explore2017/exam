@@ -237,7 +237,7 @@ class Index extends Component {
             <Form >
               {paper}
               <Card style={{ marginTop: 30 }}>
-                <Button icon="save" type="primary"  style={{ float: 'right' }}>返回</Button>
+                <Button  type="primary"  style={{ float: 'right' }}><Link to={`/student/exam/me`}>返回</Link></Button>
               </Card>
             </Form>
           </div>

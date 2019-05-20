@@ -33,9 +33,9 @@ class UploadImg extends React.Component {
   };
 
   onFileChange(info){
-    const fileList=[];
-    const urlList=[];
-    info.fileList.map((item)=>{
+    let fileList=[];
+    let urlList=[];
+    info.fileList.map((item)=>{   
           fileList.push({
             uid:item.uid,
             status:item.status,
