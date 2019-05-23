@@ -28,6 +28,7 @@ class ShowPaper extends React.Component {
   questionShow(item, singleScore, index) {
     let selects = []
     let imgs=[];
+    let images=[];
     if(item.img!=null){
       imgs=item.img.split("&&&");
     }  
