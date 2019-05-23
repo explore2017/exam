@@ -206,11 +206,12 @@ class CreateExam extends React.Component {
           this.setState({
             paperId:res.data.id,
             visibleDesginModal:false,
-          });         
+          }); 
+          this.handleCloseDesgin();        
         }
       })
       }
-      this.handleCloseDesgin();
+  
     });
   }
 
