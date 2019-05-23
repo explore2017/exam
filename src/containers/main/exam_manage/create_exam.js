@@ -82,7 +82,7 @@ class CreateExam extends React.Component {
         if(paperId==undefined||paperId==null||paperId==""){
           Modal.error({
             title: '出错了',
-            content: '请选择选择试卷或随机出卷',
+            content: '请选择指定试卷或随机出卷',
           });
           return;
         }
@@ -110,7 +110,7 @@ class CreateExam extends React.Component {
         }).then((res)=>{
           if(res.status==0){
             this.props.form.resetFields();
-            this.setState({batches:[]});
+            this.setState({batches:[],paperId:undefined,showId:-1});
           }
         })
       }
@@ -503,14 +503,14 @@ handleChange(value) {
               label="试卷分数:"
             >
           <InputNumber style={{width:100}} disabled={true} value={desginScore}></InputNumber>
-            <span style={{marginLeft:20}}>试卷难度：</span>
+            {/* <span style={{marginLeft:20}}>试卷难度：</span>
             <Select defaultValue={0} onChange={(value)=>{this.setState({
                  difficulty:value
             })}} style={{width:140,marginLeft:0}}>
                      <Option value={0}>简单</Option>
                      <Option value={1}>中等</Option>
                      <Option value={2}>困难</Option>
-            </Select>
+            </Select> */}
             </FormItem>
             <FormItem
              {...formItemLayoutTop}

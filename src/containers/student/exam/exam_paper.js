@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
 import { Card, Radio, Tag, Input, Statistic, Row, Col, Button, Form, Spin, Icon, message, Modal, Checkbox } from 'antd'
 import { get, post } from "@components/axios";
-import DaoJiShi from '../DaoJiShi'
 const Countdown = Statistic.Countdown;
 const RadioGroup = Radio.Group;
 const { TextArea } = Input;
 const FormItem = Form.Item;
+import { Link  } from 'react-router-dom';
 
 
 
