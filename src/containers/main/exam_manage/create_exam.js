@@ -163,6 +163,7 @@ class CreateExam extends React.Component {
     this.props.form.validateFields(['classId'],(err, values) => {
       if (!err) {
       const {simple,middle,hard}=this.state
+    
       if(simple+middle+hard!=100){
         Modal.error({
           title: '出错了',
@@ -263,7 +264,11 @@ handleCloseDesgin(){
     multiplescore:0,
     shortscore:0,
     completionscore:0,
-    analysisscore:0,});
+    analysisscore:0,
+    simple:0,
+    middle:0,
+    hard:0,
+});
 }
 
 deleteBatch(index){
