@@ -151,8 +151,9 @@ class SubjectQuestion extends React.Component {
       action: 'http://localhost:8000/question/large_question?subjectId='+this.props.match.params.subjectId,
       withCredentials:true,
       onChange(info) {
-        if (info.file.response.status == '0') {
+        if (info.file.response.status == '0') {         
           message.success(info.file.response.msg);
+          this.getQuestionDate();
         } else   {
           message.error("批量导入试题失败失败，请检查文件格式");
         }

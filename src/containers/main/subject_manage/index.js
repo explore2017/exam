@@ -291,7 +291,7 @@ addSubject(){
               }  
               {
                this.state.role==1?
-              <Input placeholder="请输入科目名称"  style={{ width: '20%' }} onChange={this.handleInputChange} value={this.state.subjectName} ></Input>:''
+              <Input placeholder="请输入科目名称"  style={{ marginLeft:5,width: '20%' }} onChange={this.handleInputChange} value={this.state.subjectName} ></Input>:''
               }  
             </Col>
           </Row>

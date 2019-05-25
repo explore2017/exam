@@ -113,7 +113,7 @@ class Index extends Component {
           if (typeof reply == "undefined" || reply == null || reply == "") {
             questions.push(<Button key={item.sequence} style={{ marginRight: 10 }}>{parseInt(item.sequence)+1}</Button>)
           } else {
-            questions.push(<Button key={item.sequence} style={{ marginRight: 10 }} type='primary'>{parseInt(item.sequence)+1}</Button>)
+            questions.push(<Button key={item.sequence} style={{ marginRight: 10 ,marginTop:5 }} type='primary'>{parseInt(item.sequence)+1}</Button>)
           }
         })
       }
@@ -169,7 +169,7 @@ class Index extends Component {
       const item = record.question;
       let selects = [];
       let imgs=[];
-      if(item.img!=null){
+      if(item.img!=null&&item.img!=''){
         imgs=item.img.split("&&&");
       }
       let images=[]

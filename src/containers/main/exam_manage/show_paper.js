@@ -29,7 +29,7 @@ class ShowPaper extends React.Component {
     let selects = []
     let imgs=[];
     let images=[];
-    if(item.img!=null){
+    if(item.img!=null&&item.img!=''){
       imgs=item.img.split("&&&");
     }  
     for (var i = 0; i < imgs.length; i++) {
